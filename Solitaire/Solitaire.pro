@@ -18,3 +18,6 @@ HEADERS  += mainwindow.h \
     card.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    res.qrc
