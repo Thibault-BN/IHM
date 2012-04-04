@@ -24,5 +24,16 @@ Board::~Board()
 
 Board::fillColumns(vector<Card*> cards)
 {
+    vector<Cards*> pile;
 
+    for (int i = 0; i<7; i++)
+    {
+        for (int j=0; j<=i; j++)
+        {
+            pile.push_back(cards.back());
+            cards.pop_back();
+        }
+
+        columns[i].add(pile);
+    }
 }
