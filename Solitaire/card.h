@@ -7,11 +7,16 @@ using namespace std;
 class Card
 {
 public:
-    Card();
     Card(int);
+
+    void draw(); //arguments : coordonnees
+
+    //Ajouter listener
 
 private:
     int number;
+    bool faceDown;
+
 };
 
 #endif // CARD_H

@@ -4,7 +4,11 @@ Column::Column()
 {
 }
 
-Column::add(vector<Card *> _stack)
+void Column::add(vector<Card *> _stack)
 {
-    copy(_stack.begin(),stack.end(),back_inserter(stack));
+    copy(_stack.begin(),cards.end(),back_inserter(cards));
+}
+
+string Column::describe()
+{
 }

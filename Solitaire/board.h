@@ -2,7 +2,10 @@
 #define BOARD_H
 
 #include "column.h"
+#include "deck.h"
+#include "card.h"
 
+#include <algorithm>
 
 using namespace std;
 
@@ -15,7 +18,8 @@ public:
 
 private:
     Column* columns;
-    void fillColumns();
+    Deck deck;
+    void fillColumns(vector<Card*>);
 };
 
 #endif // BOARD_H

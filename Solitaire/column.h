@@ -2,6 +2,9 @@
 #define COLUMN_H
 
 #include <vector>
+#include <string>
+
+#include "card.h"
 
 using namespace std;
 
@@ -10,10 +13,17 @@ class Column
 public:
     Column();
 
+    //Manip cards
     void add(vector<Card*>);
 
+    //dessin
+    void draw(int); //... arguments
+
+    //dev
+    string describe();
+
 private:
-    vector<Card*> stack;
+    vector<Card*> cards;
 
 };
 

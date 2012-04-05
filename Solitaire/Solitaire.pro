@@ -15,13 +15,15 @@ SOURCES += main.cpp\
     card.cpp \
     board.cpp \
     column.cpp \
-    deck.cpp
+    deck.cpp \
+    stack.cpp
 
 HEADERS  += mainwindow.h \
     card.h \
     board.h \
     column.h \
-    deck.h
+    deck.h \
+    stack.h
 
 FORMS    += mainwindow.ui
 

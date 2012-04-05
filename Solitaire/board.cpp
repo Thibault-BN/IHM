@@ -14,17 +14,18 @@ Board::Board()
     random_shuffle(cards.begin(),cards.end());
 
     fillColumns(cards);
+    deck.fill(cards);
 }
 
 
 Board::~Board()
 {
-    delete [] colums;
+    delete [] columns;
 }
 
-Board::fillColumns(vector<Card*> cards)
+void Board::fillColumns(vector<Card*> cards)
 {
-    vector<Cards*> pile;
+    vector<Card*> pile;
 
     for (int i = 0; i<7; i++)
     {
