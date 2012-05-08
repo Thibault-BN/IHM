@@ -18,6 +18,9 @@ Board::Board()
     deck = new Deck();
     deck->fill(cards);
     deck->describe();
+    setStyleSheet("background-image: url(:images/grass.png);"
+                        "background-position: top left;"
+                        );
 }
 
 
@@ -48,4 +51,13 @@ void Board::fillColumns(QVector<Card*> *cards)
     }
 
     cout << "Columns filled" << endl;
+}
+
+void Board::paintEvent(QPaintEvent *e) {
+    QWidget::paintEvent(e);
+    QPainter painter (this);
+
+    QRect rect(QPoint(100,100),QPoint(200,200));
+    painter.drawImage(rect,QImage(":images/roi1.png"));
+
 }
