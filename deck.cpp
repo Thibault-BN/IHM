@@ -7,6 +7,7 @@ Deck::Deck()
 void Deck::fill(QVector<Card*> & _deck)
 {
     deck = _deck;
+    iCardUp = deck.size() - 1;
 }
 
 void Deck::describe()

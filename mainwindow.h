@@ -2,7 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenu>
+#include <QMenuBar>
+#include <QToolBar>
 #include "board.h"
+
 
 using namespace std;
 
@@ -15,7 +19,7 @@ public:
     ~MainWindow();
     
 private:
-
+    Board* board;
 };
 
 #endif // MAINWINDOW_H
