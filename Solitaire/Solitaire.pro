@@ -25,7 +25,7 @@ HEADERS  += mainwindow.h \
     deck.h \
     stack.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 RESOURCES += \
     res.qrc
