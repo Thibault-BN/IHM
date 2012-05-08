@@ -19,4 +19,5 @@ void Deck::describe()
         cout << " " << (*it)->getNumber();
     }
     cout << endl;
+
 }
