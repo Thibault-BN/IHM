@@ -5,6 +5,9 @@
 #include <string>
 
 #include "card.h"
+#include <QPainter>
+
+#include <QPen>
 
 using namespace std;
 
@@ -18,7 +21,7 @@ public:
     void add(QVector<Card*> &);
 
     //dessin
-    void draw(int); //... arguments
+    void draw(QPainter &painter, int card_width, int card_height, int ecartV, int ecartH, int i); //... arguments
 
     //dev
     void describe();

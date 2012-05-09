@@ -21,7 +21,7 @@ public:
     void deal(int); //Deal 3 ou 1 ?
     void describe();
 
-    void draw(QPainter &painter, int width);
+    void draw(QPainter &painter, int card_width, int card_height, int ecartV, int ecartH);
 
 private:
     QVector<Card*> cards;
