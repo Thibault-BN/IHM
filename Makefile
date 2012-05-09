@@ -205,7 +205,6 @@ compiler_rcc_make_all: qrc_res.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_res.cpp
 qrc_res.cpp: res.qrc \
-		images/roi1.png \
 		images/grass.png
 	/usr/bin/rcc -name res res.qrc -o qrc_res.cpp
 
