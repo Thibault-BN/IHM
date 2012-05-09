@@ -15,6 +15,7 @@
 #include <QImage>
 #include <QRect>
 #include <QBrush>
+#include <QMouseEvent>
 
 using namespace std;
 
@@ -29,12 +30,23 @@ private:
     Column** columns;
     Stack** stack;
     Deck * deck;
+    bool mouseIsPressed;
+
     void fillColumns(QVector<Card*>*);
     void randomize(int*);
     void paintEvent(QPaintEvent * e);
     void updatePos();
     void resizeEvent(QResizeEvent *);
 
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+    bool clickOnDeck(int x, int y);
+    bool clickOnColumn(int x, int y, int &col, int &card);
+
+    Card* currentCard;
+    int shiftX;
+    int shiftY;
 
 public slots:
     void newGame();

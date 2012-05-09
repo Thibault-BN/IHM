@@ -25,6 +25,10 @@ public:
 
     inline void setPos(int x, int y) {posX=x; posY=y;}
     inline void setSize(int w_,int h_) {w = w_; h = h_;}
+    inline int &getX() {return posX;}
+    inline int &getY() {return posY;}
+    inline int &getW() {return w;}
+    inline int &getH() {return h;}
 
 private:
     QVector<Card*> cards;
