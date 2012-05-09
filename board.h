@@ -4,6 +4,7 @@
 #include "column.h"
 #include "deck.h"
 #include "card.h"
+#include "stack.h"
 
 #include <algorithm>
 #include <iostream>
@@ -26,6 +27,7 @@ public:
 
 private:
     Column** columns;
+    Stack** stack;
     Deck * deck;
     void fillColumns(QVector<Card*>*);
     void randomize(int*);

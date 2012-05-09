@@ -21,6 +21,9 @@ void Board::paintEvent(QPaintEvent *e) {
     for (int i = 0; i<7;i++) {
         columns[i]->draw(painter);
     }
+    for (int k=0;k<4;k++){
+        stack[k]->draw(painter);
+    }
 }
 
 void Board::newGame()
@@ -35,6 +38,10 @@ void Board::newGame()
         columns[i] = new Column();
     }
 
+    this->stack = new Stack*[4];
+    for (int k=0;k<4;k++) {
+        stack[k] = new Stack();
+    }
 
     QVector<Card*> cards;
     int tab[52];
@@ -115,8 +122,8 @@ void Board::randomize(int tab[])
 
 void Board::updatePos(){
 
-    int card_width = 0.67*0.19*height();
-    int card_height = 0.19*height();
+    int card_height = 0.19*this->height();
+    int card_width = 0.67*card_height;
     int ecartV = (width()-(7*card_width))/8;
     int ecartH = 30;
 
@@ -129,6 +136,10 @@ void Board::updatePos(){
             columns[i]->getCards()[j]->setPos((i+1)*ecartV+i*card_width,2*ecartH+card_height+j*10);
             columns[i]->getCards()[j]->setSize(card_width,card_height);
         }
+    }
+    for (int k=0;k<4;k++) {
+        stack[k]->setPos((k+4)*ecartV+(k+3)*card_width,ecartH);
+        stack[k]->setSize(card_width,card_height);
     }
 }
 
