@@ -60,6 +60,8 @@ void Board::newGame()
     deck->fill(cards);
 
     deck->describe();
+
+    update();
 }
 
 void Board::fillColumns(QVector<Card*> *cards)
