@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     QAction * actionNewGame = new QAction(tr("&Nouvelle partie"),this);
     actionNewGame->setShortcut(tr("Ctrl+N"));
+    connect(actionNewGame, SIGNAL(triggered()), board, SLOT(newGame()));
 
     QAction * actionQuit = new QAction(tr("&Quitter"),this);
     actionQuit->setShortcut(tr("Ctrl+Q"));
@@ -31,4 +32,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 MainWindow::~MainWindow()
 {
+    if (board != NULL)
+        delete board;
 }

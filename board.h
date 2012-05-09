@@ -18,16 +18,20 @@ using namespace std;
 
 class Board : public QWidget
 {
+    Q_OBJECT
 public:
     Board();
-    ~Board();
-
+    //~Board();
 
 private:
-    Column * columns;
+    Column** columns;
     Deck * deck;
     void fillColumns(QVector<Card*>*);
     void paintEvent(QPaintEvent * e);
+
+public slots:
+    void newGame();
+
 };
 
 #endif // BOARD_H

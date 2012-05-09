@@ -12,6 +12,7 @@ class Deck
 {
 public:
     Deck();
+    ~Deck();
 
     //Manips cards
     void fill(QVector<Card*> &);
@@ -20,7 +21,7 @@ public:
     void describe();
 
 private:
-    QVector<Card*> deck;
+    QVector<Card*> cards;
     int iCardUp; //i Card sur le dessus
 };
 

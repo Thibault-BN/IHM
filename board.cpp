@@ -2,31 +2,61 @@
 
 Board::Board()
 {
-    //Creation des 7 colonnes
-    columns = new Column[7];
-    QVector<Card*> cards;
+    deck = NULL;
+    columns = NULL;
 
+    setStyleSheet("background-image: url(:images/grass.png);"
+                  "background-position: top left;"
+                  );
+    newGame();
+}
+
+//Board::~Board()
+//{
+//    if (columns != NULL)
+//        delete columns;
+//    if (deck != NULL)
+//        delete deck;
+//}
+
+void Board::paintEvent(QPaintEvent *e) {
+    QWidget::paintEvent(e);
+    QPainter painter (this);
+
+    QRect rect(QPoint(100,100),QPoint(200,200));
+    painter.drawImage(rect,QImage(":images/roi1.png"));
+
+}
+
+void Board::newGame()
+{
+    //Creation des 7 colonnes
+    if (columns != NULL)
+        delete [] columns;
+
+    this->columns = new Column*[7];
+    for (int i = 0; i< 7; i++)
+    {
+        columns[i] = new Column();
+    }
+
+
+    QVector<Card*> cards;
     for (int i=0; i < 52; i++)
     {
         cards.push_back(new Card(i));
     }
-
     random_shuffle(cards.begin(),cards.end());
 
-    fillColumns(&cards);
+    this->fillColumns(&cards);
 
-    deck = new Deck();
+    if (deck != NULL)
+        delete deck;
+
+    this->deck = new Deck();
     deck->fill(cards);
+
     deck->describe();
-    setStyleSheet("background-image: url(:images/grass.png);"
-                        "background-position: top left;"
-                        );
-}
-
-
-Board::~Board()
-{
-    delete [] columns;
 }
 
 void Board::fillColumns(QVector<Card*> *cards)
@@ -47,17 +77,8 @@ void Board::fillColumns(QVector<Card*> *cards)
         }
 
         cout << endl;
-        columns[i].add(pile);
+        columns[i]->add(pile);
     }
 
     cout << "Columns filled" << endl;
-}
-
-void Board::paintEvent(QPaintEvent *e) {
-    QWidget::paintEvent(e);
-    QPainter painter (this);
-
-    QRect rect(QPoint(100,100),QPoint(200,200));
-    painter.drawImage(rect,QImage(":images/roi1.png"));
-
 }

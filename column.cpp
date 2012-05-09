@@ -4,11 +4,28 @@ Column::Column()
 {
 }
 
-void Column::add(QVector<Card *> _stack)
+Column::~Column()
 {
-    copy(_stack.begin(),cards.end(),back_inserter(cards));
+    if(!cards.empty())
+    {
+        QVector<Card*>::iterator it;
+        for (it = cards.begin(); it != cards.end(); it++)
+        {
+            delete it;
+        }
+    }
 }
 
-string Column::describe()
+void Column::add(QVector<Card *> &_stack)
+{
+    QVector<Card*>::iterator it;
+
+    for(it = _stack.begin(); it != _stack.end(); it++)
+    {
+        cards.push_back(*it);
+    }
+}
+
+void Column::describe()
 {
 }

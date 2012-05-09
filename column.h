@@ -12,15 +12,16 @@ class Column
 {
 public:
     Column();
+    ~Column();
 
     //Manip cards
-    void add(QVector<Card*>);
+    void add(QVector<Card*> &);
 
     //dessin
     void draw(int); //... arguments
 
     //dev
-    string describe();
+    void describe();
 
 private:
     QVector<Card*> cards;
