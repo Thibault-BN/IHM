@@ -13,6 +13,7 @@
 #include <QPoint>
 #include <QImage>
 #include <QRect>
+#include <QBrush>
 
 using namespace std;
 

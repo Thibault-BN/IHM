@@ -5,6 +5,7 @@
 
 #include <QVector>
 #include <iostream>
+#include <QPainter>
 
 using namespace std;
 
@@ -19,6 +20,8 @@ public:
 
     void deal(int); //Deal 3 ou 1 ?
     void describe();
+
+    void draw(QPainter &painter, int width);
 
 private:
     QVector<Card*> cards;

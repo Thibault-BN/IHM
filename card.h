@@ -17,6 +17,9 @@ public:
 private:
     int number;
     bool faceDown;
+    int width;
+    int posX;
+    int posY;
 
 };
 

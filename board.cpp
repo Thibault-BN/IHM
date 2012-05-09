@@ -5,26 +5,22 @@ Board::Board()
     deck = NULL;
     columns = NULL;
 
-    setStyleSheet("background-image: url(:images/grass.png);"
-                  "background-position: top left;"
-                  );
+    QPalette Pal(palette());
+    QColor color(76,164,35,255);
+    Pal.setColor(QPalette::Background, color);
+    setAutoFillBackground(true);
+    setPalette(Pal);
     newGame();
 }
-
-//Board::~Board()
-//{
-//    if (columns != NULL)
-//        delete columns;
-//    if (deck != NULL)
-//        delete deck;
-//}
 
 void Board::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
     QPainter painter (this);
 
+    deck->draw(painter,(this->width())/10);
+
     QRect rect(QPoint(100,100),QPoint(200,200));
-    painter.drawImage(rect,QImage(":images/roi1.png"));
+    painter.drawImage(rect,QImage(":images/roiP.png"));
 
 }
 
