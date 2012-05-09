@@ -28,7 +28,10 @@ private:
     Column** columns;
     Deck * deck;
     void fillColumns(QVector<Card*>*);
+    void randomize(int*);
     void paintEvent(QPaintEvent * e);
+
+
 
 public slots:
     void newGame();

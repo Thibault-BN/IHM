@@ -42,11 +42,14 @@ void Board::newGame()
 
 
     QVector<Card*> cards;
+    int tab[52];
+
+    randomize(tab);
+
     for (int i=0; i < 52; i++)
     {
-        cards.push_back(new Card(i,true));
+        cards.push_back(new Card(tab[i],true));
     }
-    random_shuffle(cards.begin(),cards.end());
 
     this->fillColumns(&cards);
 
@@ -84,4 +87,30 @@ void Board::fillColumns(QVector<Card*> *cards)
     }
 
     cout << "Columns filled" << endl;
+}
+
+void Board::randomize(int tab[])
+{
+    srand(time(NULL));
+    for (int i=0; i<52; i++)
+    {
+        tab[i] = -1;
+    }
+
+    for (int i=0; i<52; i++)
+    {
+        int position = rand() % (52-i);
+
+        int idNotFilled = -1;
+        for (int j = 0; j<52; j++)
+        {
+            if (tab[j] == -1) idNotFilled++;
+            if (idNotFilled == position)
+            {
+                tab[j] = i;
+                break;
+            }
+        }
+    }
+
 }
