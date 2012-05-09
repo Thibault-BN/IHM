@@ -33,14 +33,12 @@ void Column::describe()
 {
 }
 
-void Column::draw(QPainter &painter, int card_width, int card_height,int ecartV, int ecartH, int i) {
+void Column::draw(QPainter &painter) {
 
-    int posColX = (i+1)*ecartV+i*card_width;
-    int posColY = 2*ecartH+card_height;
-    QRect rect(posColX,posColY,card_width,card_height);
+    QRect rect(posX,posY,w,h);
     painter.drawRect(rect);
 
     for (int j=0;j<cards.size();j++) {
-        cards[j]->draw(painter,card_width,card_height,posColX,posColY,j);
+        cards[j]->draw(painter);
     }
 }

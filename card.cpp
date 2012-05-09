@@ -11,9 +11,9 @@ int & Card::getNumber()
     return number;
 }
 
-void Card::draw(QPainter &painter, int card_width, int card_height, int poscolX, int posColY, int j){
+void Card::draw(QPainter &painter){
 
-    QRect rect(poscolX,posColY+j*10,card_width,card_height);
+    QRect rect(posX,posY,w,h);
     if (faceDown) {
         painter.drawImage(rect,QImage(":images/dos3.png"));
     }

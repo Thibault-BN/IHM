@@ -21,13 +21,21 @@ public:
     void add(QVector<Card*> &);
 
     //dessin
-    void draw(QPainter &painter, int card_width, int card_height, int ecartV, int ecartH, int i); //... arguments
+    void draw(QPainter &painter); //... arguments
 
     //dev
     void describe();
 
+    inline void setPos(int x, int y) {posX=x; posY=y;}
+    inline void setSize(int w_, int h_) {w=w_; h=h_;}
+    inline QVector<Card*> & getCards() {return cards;}
+
 private:
     QVector<Card*> cards;
+    int posX;
+    int posY;
+    int w;
+    int h;
 
 };
 

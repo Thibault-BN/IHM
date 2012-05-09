@@ -12,14 +12,17 @@ public:
 
     int & getNumber();
     void setFace(bool face);
-    void draw(QPainter &painter, int card_width, int card_height,int poscolX, int posColY, int j); //arguments : coordonnees
+    void draw(QPainter &painter); //arguments : coordonnees
+    inline void setPos(int x, int y) {posX=x; posY=y;}
+    inline void setSize(int w_, int h_) {w=w_; h=h_;}
 
     //Ajouter listener
 
 private:
     int number;
     bool faceDown;
-    int width;
+    int w;
+    int h;
     int posX;
     int posY;
 

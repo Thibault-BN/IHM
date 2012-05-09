@@ -21,11 +21,18 @@ public:
     void deal(int); //Deal 3 ou 1 ?
     void describe();
 
-    void draw(QPainter &painter, int card_width, int card_height, int ecartV, int ecartH);
+    void draw(QPainter &painter);
+
+    inline void setPos(int x, int y) {posX=x; posY=y;}
+    inline void setSize(int w_,int h_) {w = w_; h = h_;}
 
 private:
     QVector<Card*> cards;
     int iCardUp; //i Card sur le dessus
+    int posX;
+    int posY;
+    int w;
+    int h;
 };
 
 #endif // DECK_H

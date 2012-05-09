@@ -30,7 +30,8 @@ private:
     void fillColumns(QVector<Card*>*);
     void randomize(int*);
     void paintEvent(QPaintEvent * e);
-
+    void updatePos();
+    void resizeEvent(QResizeEvent *);
 
 
 public slots:

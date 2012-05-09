@@ -39,8 +39,8 @@ void Deck::deal(int dealType)
     iCardUp = (iCardUp - dealType);
 }
 
-void Deck::draw(QPainter &painter, int card_width, int card_height, int ecartV, int ecartH){
+void Deck::draw(QPainter &painter){
 
-    QRect rect(ecartV,ecartH,card_width,card_height);
+    QRect rect(posX,posY,w,h);
     painter.drawImage(rect,QImage(":images/dos3.png"));
 }
