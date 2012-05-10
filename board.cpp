@@ -577,7 +577,7 @@ void Board::saveBoard() const
         board->saveColumn(i, columns[i]->getRootCard());
     }
 
-    board->saveDeck(NULL);
+    board->saveDeck(deck->getRootCard(),deck->getIndex());
 
     //Rajouter le temps
 }

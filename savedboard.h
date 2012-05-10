@@ -11,11 +11,12 @@ public:
 
     void saveColumn(int,Card*);
     void saveStack(int,Card*);
-    void saveDeck(Card*);
+    void saveDeck(Card*, int);
 
 private:
     Card*** stacks;
     Card** deck;
+    int iCardUpDeck;
     Card*** columns;
     int * iLastFaceDownColumns;
 

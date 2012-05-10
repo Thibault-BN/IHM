@@ -5,6 +5,8 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QToolBar>
+#include <QAction>
+
 #include "board.h"
 
 using namespace std;
@@ -18,8 +20,10 @@ public:
     
 private:
     Board* board;
+    QAction * actionUndo;
 
 public slots:
+    inline void actionPerformed() { this->actionUndo->setEnabled(true); }
 };
 
 #endif // MAINWINDOW_H

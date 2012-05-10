@@ -5,6 +5,7 @@ SavedBoard::SavedBoard()
     stacks = new Card**[4];
     columns = new Card**[7];
     deck = NULL;
+    iCardUpDeck = -1;
     iLastFaceDownColumns = new int[7];
 }
 
@@ -49,10 +50,25 @@ void SavedBoard::saveColumn(int iColumn, Card * _root)
             _root = _root->getNextCard();
         }
     }
+    else
+    {
+        columns[iColumn] = NULL;
+    }
 }
 
-void SavedBoard::saveDeck(Card *)
+void SavedBoard::saveDeck(Card * _root, int _iCardUp)
 {
+    if (_root != NULL)
+    {
+        int nCards = _root->getLengthToLeaf() + 1;
+        deck = new Card*[nCards];
+        iCardUpDeck = _iCardUp;
 
+        for (int i = 0; i < nCards; i++)
+        {
+            deck[i] = _root;
+            _root = _root->getNextCard();
+        }
+    }
 }
 
