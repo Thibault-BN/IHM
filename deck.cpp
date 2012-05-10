@@ -66,8 +66,13 @@ Card * Deck::getCardI(int i) const
 void Deck::draw(QPainter &painter){
 
     QRect rect(posX,posY,w,h);
-    if (index!=cards->getLengthToLeaf()) {
-        painter.drawImage(rect,QImage(":images/dos3.png"));
+    if (cards!=NULL) {
+        if (index!=cards->getLengthToLeaf()) {
+            painter.drawImage(rect,QImage(":images/dos3.png"));
+        }
+        else {
+            painter.drawRect(rect);
+        }
     }
     else {
         painter.drawRect(rect);
@@ -76,6 +81,9 @@ void Deck::draw(QPainter &painter){
     painter.drawRect(rect2);
 
     if(index!=-1) {
+        if (index>0) {
+            getCardI(index-1)->draw(painter);
+        }
         getCardI(index)->draw(painter);
     }
 }

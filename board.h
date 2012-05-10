@@ -18,6 +18,7 @@
 #include <QBrush>
 #include <QMouseEvent>
 #include <QMainWindow>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -36,6 +37,7 @@ private:
     Deck * deck;
     bool cardIsSelectedFromStack;
     bool cardIsSelectedFromColumn;
+    bool cardIsSelectedFromDeck;
 
     void fillColumns(Card**);
     void randomize(int*);
@@ -49,14 +51,17 @@ private:
     void mouseDoubleClickEvent(QMouseEvent *);
 
     bool clickOnDeck(int x, int y);
+    bool clickOnReverseDeck(int x, int y);
     bool clickOnColumn(int x, int y, int &col, int &card);
     bool clickOnStack(int x, int y, int &numStack);
 
     bool releaseOnColumn(int x, int y);
-    void releaseOnStack(int x, int y);
+    bool releaseOnStack(int x, int y);
 
     bool movePossible(int lastCard, int newCard);
     bool moveOnStackPossible(int lastCard, int newCard);
+
+    void gagne();
 
     Card* currentCard;
     int shiftX;

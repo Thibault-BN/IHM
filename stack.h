@@ -25,6 +25,7 @@ public:
     inline int &getW() {return w;}
     inline int &getH() {return h;}
     void draw(QPainter &painter);
+    int getSize();
 
 private:
     Card* cards;
