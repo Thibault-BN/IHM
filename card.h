@@ -21,25 +21,18 @@ public:
     Card * getLeaf() const;
     int getLengthToLeaf() const;
 
-<<<<<<< HEAD
-=======
+
     int & getNumber();
     void setFace(bool face);
     inline bool getFace() {return faceDown;}
     void draw(QPainter &painter); //arguments : coordonnees
->>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
     inline void setPos(int x, int y) {posX=x; posY=y;}
     inline void setSize(int w_, int h_) {w=w_; h=h_;}
     inline int &getX() {return posX;}
     inline int &getY() {return posY;}
     inline int &getW() {return w;}
     inline int &getH() {return h;}
-<<<<<<< HEAD
 
-    void setFace(bool face);
-    void draw(QPainter &painter);
-=======
->>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
 
     //Ajouter listener
 
