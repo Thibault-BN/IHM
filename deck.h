@@ -34,6 +34,7 @@ public:
     inline void setIndex(int i) {index = i;}
     inline void setEcart(int ec) {ecart=ec;}
     inline Card* getRootCard() {return cards;}
+    inline void setRootCard(Card* _c) { cards = _c;}
     inline int getIndex() {return index;}
 
 private:

@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QStatusBar * stBar = statusBar();
 
     this->setCentralWidget(board);
-    //connect(board,SIGNAL(),this,SLOT(actionPerformed()));
+    connect(board,SIGNAL(boardSaved()),this,SLOT(actionPerformed()));
 }
 
 MainWindow::~MainWindow()

@@ -201,6 +201,7 @@ void Board::mousePressEvent(QMouseEvent * e) {
     int numCard;
     int numStack;
     if (clickOnDeck(e->x(),e->y())) {
+        saveBoard();
 
         //Selon deal 1 ou deal 3?
         deck->deal(1);
@@ -240,6 +241,8 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
                     int numCardInStack = 52;
                     if (stack[i]->getRootCard()!=NULL) numCardInStack = stack[i]->getRootCard()->getLeaf()->getNumber();
                     if (moveOnStackPossible(card->getNumber(),numCardInStack)) {
+                        saveBoard();
+
                         //Move
                         if(card->getPreviousCard()!=NULL) {
                             card->getPreviousCard()->setNextCard(NULL);
@@ -280,35 +283,37 @@ bool Board::releaseOnColumn(int x, int y) {
         if (numCard!=52) {
             newCardNum = columns[numCol]->getCardI(numCard)->getNumber();
         }
-            if (movePossible(currentCard->getNumber(),newCardNum)) {
-                //Alors on move la carte
-                if(currentCard->getPreviousCard()!=NULL) {
-                    currentCard->getPreviousCard()->setNextCard(NULL);
-                    currentCard->getPreviousCard()->setFace(false);
-                    currentCard->setPreviousCard(NULL);
+        if (movePossible(currentCard->getNumber(),newCardNum)) {
+            saveBoard();
 
-                }
-                else {
-                    if (cardIsSelectedFromColumn) {
-                        columns[currCol]->setRootCard(NULL);
-                    }
-                    if (cardIsSelectedFromStack) {
-                        stack[currStack]->setRootCard(NULL);
-                    }
-                }
-                columns[numCol]->add(currentCard);
-                updatePos();
-                return true;
+            //Alors on move la carte
+            if(currentCard->getPreviousCard()!=NULL) {
+                currentCard->getPreviousCard()->setNextCard(NULL);
+                currentCard->getPreviousCard()->setFace(false);
+                currentCard->setPreviousCard(NULL);
+
             }
             else {
-                Card* card = currentCard;
-                int j=0;
-                while(card!=NULL) {
-                    card->setPos(lastX,lastY+j*ECART_CARTE);
-                    j++;
-                    card = card->getNextCard();
+                if (cardIsSelectedFromColumn) {
+                    columns[currCol]->setRootCard(NULL);
+                }
+                if (cardIsSelectedFromStack) {
+                    stack[currStack]->setRootCard(NULL);
                 }
             }
+            columns[numCol]->add(currentCard);
+            updatePos();
+            return true;
+        }
+        else {
+            Card* card = currentCard;
+            int j=0;
+            while(card!=NULL) {
+                card->setPos(lastX,lastY+j*ECART_CARTE);
+                j++;
+                card = card->getNextCard();
+            }
+        }
 
     }
     else {
@@ -337,6 +342,8 @@ void Board::releaseOnStack(int x, int y) {
         }
 
         if (moveOnStackPossible(currentCard->getNumber(),numCard)) {
+            saveBoard();
+
             //Alors on bouge
             if(currentCard->getPreviousCard()!=NULL) {
                 currentCard->getPreviousCard()->setNextCard(NULL);
@@ -394,9 +401,9 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
 
             if (columns[i]->getRootCard()==NULL){
                 if(y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH())) {
-                card = 52;
-                col = i;
-                return true;
+                    card = 52;
+                    col = i;
+                    return true;
                 }
                 else return false;
             }
@@ -563,7 +570,7 @@ bool Board::moveOnStackPossible(int lastCard, int newCard) {
     return false;
 }
 
-void Board::saveBoard() const
+void Board::saveBoard()
 {
     SavedBoard * board = new SavedBoard();
 
@@ -579,10 +586,125 @@ void Board::saveBoard() const
 
     board->saveDeck(deck->getRootCard(),deck->getIndex());
 
+    savedBoards.push_back(board);
+
+    cout << "SavedBoars taille " << savedBoards.size() << endl;
+
     //Rajouter le temps
+
+    emit boardSaved();
 }
 
 void Board::restorePreviousBoard()
 {
+    cout << "Restoring board ......" << endl;
+    if (savedBoards.isEmpty() == true)
+    {
+    }
+    else
+    {
+        SavedBoard* board = savedBoards.back();
+
+        //Colonnes
+        for (int iColumn = 0; iColumn < 7; iColumn++)
+        {
+            int nCards = board->getNCardsColumns()[iColumn];
+
+            cout << "Restoring Column ...... "<< iColumn << "/" << nCards << endl;
+            if (nCards > 0)
+            {
+                Card * root = board->getColumns()[iColumn][0];
+                root->setPreviousCard(NULL);
+                columns[iColumn]->setRootCard(root);
+
+                Card * card = root;
+
+                for (int i = 1; i < nCards; i++)
+                {
+                    cout << " " << card->getNumber();
+                    card = board->getColumns()[iColumn][i];
+
+                    card->setPreviousCard(board->getColumns()[iColumn][i-1]);
+                    card->getPreviousCard()->setNextCard(card);
+
+                    if (i-1 <= board->getILastFaceDownColumns()[iColumn])
+                    {
+                        card->getPreviousCard()->setFace(true);
+                    }
+                    else
+                    {
+                        card->getPreviousCard()->setFace(true);
+                    }
+                }
+                card->setNextCard(NULL);
+                cout << " " << card->getNumber() << endl;
+
+            }
+            else
+            {
+                columns[iColumn]->setRootCard(NULL);
+            }
+        }
+
+        //Stacks
+        for (int iStack = 0; iStack  < 4; iStack++)
+        {
+            int nCards = board->getNCardsStacks()[iStack];
+            if (nCards > 0)
+            {
+                Card * root = board->getStacks()[iStack][0];
+                root->setPreviousCard(NULL);
+                stack[iStack]->setRootCard(root);
+
+                Card * card = root;
+                for (int i = 1; i < nCards; i++)
+                {
+                    card = board->getStacks()[iStack][i];
+                    card->setPreviousCard(board->getStacks()[iStack][i-1]);
+                    card->getPreviousCard()->setNextCard(card);
+                    card->setFace(false);
+                }
+                card->setNextCard(NULL);
+            }
+            else
+            {
+                stack[iStack]->setRootCard(NULL);
+            }
+        }
+
+        //Deck
+        if(true)
+        {
+            int nCards = board->getNCardsDeck();
+            if (nCards > 0)
+            {
+                Card * root = board->getDeck()[0];
+                root->setPreviousCard(NULL);
+                deck->setRootCard(root);
+
+                Card * card = NULL;
+                for (int i = 1; i < nCards; i++)
+                {
+                    card = board->getDeck()[i];
+                    card->setPreviousCard(board->getDeck()[i-1]);
+                    card->getPreviousCard()->setNextCard(card);
+                    if (i == board->getICardUpDeck()) card->setFace(false);
+                    else card->setFace(true);
+                }
+                card->setNextCard(NULL);
+            }
+            else
+            {
+                deck->setRootCard(NULL);
+            }
+        }
+
+        cout << "Size savedBoards " << savedBoards.size();
+        savedBoards.removeLast();
+        cout << " " << savedBoards.size() << endl;
+
+        updatePos();
+        update();
+    }
 
 }

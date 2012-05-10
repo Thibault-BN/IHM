@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <iostream>
 #include <QList>
+#include <QObject>
 #include <QWidget>
 #include <QPainter>
 #include <QPoint>
@@ -27,7 +28,6 @@ public:
     Board();
     //    ~Board();
 
-    void saveBoard() const;
     void restartGame();
 
 private:
@@ -68,10 +68,14 @@ private:
 
     //Sauvegarde
     QList<SavedBoard*> savedBoards;
+    void saveBoard();
 
 public slots:
     void newGame();
     void restorePreviousBoard();
+
+signals:
+    void boardSaved();
 
 };
 
