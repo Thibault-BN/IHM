@@ -63,7 +63,7 @@ Card * Deck::getCardI(int i) const
     return card;
 }
 
-void Deck::draw(QPainter &painter){
+void Deck::draw(QPainter &painter, int dealT){
 
     QRect rect(posX,posY,w,h);
     if (cards!=NULL) {
@@ -80,19 +80,46 @@ void Deck::draw(QPainter &painter){
     QRect rect2(posX+ecart,posY,w,h);
     painter.drawRect(rect2);
 
-    if(index!=-1) {
-        if (index>0) {
-            getCardI(index-1)->draw(painter);
+    if (index != -1) {
+        if (dealT == 1) {
+            if (index>0) {
+                getCardI(index-1)->draw(painter);
+            }
+            getCardI(index)->draw(painter);
         }
-        getCardI(index)->draw(painter);
+        else if (dealT==3) {
+            if (index<2) {
+                for (int i=0;i<=index;i++) {
+                    getCardI(i)->draw(painter);
+                }
+            }
+            else {
+                for (int j=0;j<3;j++) {
+                    getCardI(index-2+j)->draw(painter);
+                }
+            }
+        }
     }
 }
 
 void Deck::deal(int i) {
-    if (index == cards->getLengthToLeaf()) {
-        index = -1;
+    if (i==1) {
+        if (index == cards->getLengthToLeaf()) {
+            index = -1;
+        }
+        else {
+            index += i;
+        }
     }
-    else {
-        index += i;
+    else if (i==3) {
+        if (index<cards->getLengthToLeaf()) {
+            index += i;
+            if (index>cards->getLengthToLeaf()) {
+                index = cards->getLengthToLeaf();
+            }
+        }
+        else {
+            index = -1;
+        }
     }
 }

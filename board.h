@@ -70,6 +70,7 @@ private:
     int lastY;
     int currCol;
     int currStack;
+    static int dealType;
 
     //Sauvegarde
     QList<SavedBoard*> savedBoards;
