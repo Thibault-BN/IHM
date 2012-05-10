@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(board, SIGNAL(savedBoardsEmpty()),this,SLOT(noMoreSavedBoards()));
 
     QAction * autoComp = new QAction(QIcon(":/images/icones/new.png"),tr("&Auto-Complete"),this);
-    actionNewGame->setShortcut(tr("Ctrl+A"));
+    autoComp->setShortcut(tr("Ctrl+A"));
     connect(autoComp, SIGNAL(triggered()), board, SLOT(autoComplete()));
 
     //Menus déroulants
