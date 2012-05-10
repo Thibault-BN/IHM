@@ -1,6 +1,6 @@
 #include "board.h"
 
-Board::Board(QMainWindow * m) : mainWindow(m)
+Board::Board()
 {
     deck = NULL;
     columns = NULL;

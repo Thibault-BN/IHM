@@ -1,6 +1,5 @@
 #ifndef BOARD_H
 #define BOARD_H
-
 #include "column.h"
 #include "deck.h"
 #include "card.h"
@@ -24,11 +23,10 @@ class Board : public QWidget
 {
     Q_OBJECT
 public:
-    Board(QMainWindow* m);
+    Board();
     //    ~Board();
 
 private:
-    QMainWindow * mainWindow;
     Column** columns;
     Stack** stack;
     Deck * deck;
