@@ -25,7 +25,6 @@ void Column::add(Card * _cards)
         Card* leaf = cards->getLeaf();
         _cards->setPreviousCard(leaf);
         leaf->setNextCard(_cards);
-        _cards->setNextCard(NULL);
     }
 }
 
@@ -61,11 +60,10 @@ void Column::draw(QPainter &painter) {
     QRect rect(posX,posY,w,h);
     painter.drawRect(rect);
 
-    Card * card = cards;
+    if (cards!=NULL) cards->draw(painter);
+}
 
-    while (card != NULL)
-    {
-        card->draw(painter);
-        card = card->getNextCard();
-    }
+int Column::getSize() {
+    if (cards==NULL) return 0;
+    else return (cards->getLengthToLeaf() + 1);
 }

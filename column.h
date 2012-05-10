@@ -21,6 +21,7 @@ public:
     void add(Card*);
 
     inline Card* getRootCard() const { return cards;}
+    inline void setRootCard(Card* card_) {cards=card_;}
     Card * getCardI(int i) const;
 
     //dessin
@@ -31,6 +32,7 @@ public:
     inline int &getY() {return posY;}
     inline int &getW() {return w;}
     inline int &getH() {return h;}
+    int getSize();
 
     //dev
     void describe();

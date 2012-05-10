@@ -1,5 +1,7 @@
 #include "board.h"
 
+#define ECART_CARTE 25
+
 Board::Board()
 {
     deck = NULL;
@@ -152,7 +154,7 @@ void Board::updatePos(){
         columns[i]->setPos((i+1)*ecartV+i*card_width,2*ecartH+card_height);
         columns[i]->setSize(card_width,card_height);
 
-        int columnSize = columns[i]->getRootCard()->getLengthToLeaf() + 1;
+        int columnSize = columns[i]->getSize();
 
         for (int j=0; j < columnSize; j++)
         {
@@ -181,11 +183,13 @@ void Board::mousePressEvent(QMouseEvent * e) {
     }
     else if (clickOnColumn(e->x(),e->y(),numCol,numCard)){
 
-        currentCard = columns[numCol]->getCardI(numCard);
-        lastX = currentCard->getX();
-        lastY = currentCard->getY();
-        currCol = numCol;
-        mouseIsPressed = true;
+        if(numCard!=52) {
+            currentCard = columns[numCol]->getCardI(numCard);
+            lastX = currentCard->getX();
+            lastY = currentCard->getY();
+            currCol = numCol;
+            mouseIsPressed = true;
+        }
     }
 }
 
@@ -202,6 +206,9 @@ void Board::mouseReleaseEvent(QMouseEvent *e) {
                         currentCard->getPreviousCard()->setFace(false);
                         currentCard->setPreviousCard(NULL);
 
+                    }
+                    else {
+                        columns[currCol]->setRootCard(NULL);
                     }
                     columns[numCol]->add(currentCard);
                     updatePos();
@@ -220,8 +227,14 @@ void Board::mouseReleaseEvent(QMouseEvent *e) {
 
 void Board::mouseMoveEvent(QMouseEvent *e) {
     if (mouseIsPressed) {
-        //On bouge la carte courante
-        currentCard->setPos(e->x()-shiftX,e->y()-shiftY);
+        //On bouge la carte courante et les suivantes
+        Card* card = currentCard;
+        int j=0;
+        while(card!=NULL) {
+            card->setPos(e->x()-shiftX,e->y()-shiftY+j*ECART_CARTE);
+            j++;
+            card = card->getNextCard();
+        }
         update();
     }
 }
@@ -238,9 +251,19 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
     for (int i = 0; i<7; i++) {
         if ( x>columns[i]->getX() && x<(columns[i]->getX()+columns[i]->getW()) ) {
             //On teste ensuite sur la hauteur
-            if (columns[i]->getRootCard()->getLengthToLeaf() + 1 == 0) return false;
-            else if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*25) ) {
+
+            if (columns[i]->getRootCard()==NULL){
+                if(y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH())) {
+                card = 52;
+                return true;
+                }
+                else return false;
+            }
+
+            if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*25) ) {
                 //On test sur quelle carte on est tombé et si elle est retournée
+                //S'il n'y a pas de carte, on renvoie 52 en num Card
+
                 for (int j=0; j<(columns[i]->getRootCard()->getLengthToLeaf()+1-1);j++) {
                     if (y>(columns[i]->getY()+j*25) && y<(columns[i]->getY()+(j+1)*25)) {
                         //C'est la carte j qui est cliquée

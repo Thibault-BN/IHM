@@ -211,6 +211,9 @@ void Card::draw(QPainter &painter){
             break;
         }
     }
+    if (nextCard!=NULL) {
+        nextCard->draw(painter);
+    }
 }
 
 void Card::setFace(bool face){
