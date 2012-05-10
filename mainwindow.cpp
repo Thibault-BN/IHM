@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     actionUndo->setShortcut(tr("Ctrl+Z"));
     actionUndo->setEnabled(false);
     connect(actionUndo, SIGNAL(triggered()), board, SLOT(restorePreviousBoard()));
+    connect(board,SIGNAL(boardSaved()),this,SLOT(actionPerformed()));
+    connect(board, SIGNAL(savedBoardsEmpty()),this,SLOT(noMoreSavedBoards()));
 
     //Menus déroulants
     QMenuBar* menubar = menuBar();
@@ -37,7 +39,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QStatusBar * stBar = statusBar();
 
     this->setCentralWidget(board);
-    connect(board,SIGNAL(boardSaved()),this,SLOT(actionPerformed()));
 }
 
 MainWindow::~MainWindow()

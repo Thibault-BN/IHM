@@ -24,6 +24,7 @@ private:
 
 public slots:
     inline void actionPerformed() { this->actionUndo->setEnabled(true); }
+    inline void noMoreSavedBoards() {this->actionUndo->setEnabled(false);}
 };
 
 #endif // MAINWINDOW_H

@@ -281,6 +281,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
             int numCardInStack = 52;
             if (stack[i]->getRootCard()!=NULL) numCardInStack = stack[i]->getRootCard()->getLeaf()->getNumber();
             if (moveOnStackPossible(card->getNumber(),numCardInStack)) {
+                saveBoard();
                 //Move
                 if (card->getPreviousCard()==NULL) {
                     deck->setRootCard(card->getNextCard());
@@ -711,11 +712,7 @@ void Board::saveBoard()
 
 void Board::restorePreviousBoard()
 {
-    cout << "Restoring board ......" << endl;
-    if (savedBoards.isEmpty() == true)
-    {
-    }
-    else
+    if (savedBoards.isEmpty() == false)
     {
         SavedBoard* board = savedBoards.back();
 
@@ -747,7 +744,7 @@ void Board::restorePreviousBoard()
                     }
                     else
                     {
-                        card->getPreviousCard()->setFace(true);
+                        card->getPreviousCard()->setFace(false);
                     }
                 }
                 card->setNextCard(NULL);
@@ -811,15 +808,18 @@ void Board::restorePreviousBoard()
             {
                 deck->setRootCard(NULL);
             }
-        }
+            deck->setIndex(board->getICardUpDeck());
 
-        cout << "Size savedBoards " << savedBoards.size();
-        savedBoards.removeLast();
-        cout << " " << savedBoards.size() << endl;
+        }
 
         updatePos();
         update();
+
+        delete savedBoards.back();
+        savedBoards.removeLast();
     }
+
+    if (savedBoards.isEmpty() == true) emit savedBoardsEmpty();
 
 }
 

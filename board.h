@@ -81,6 +81,7 @@ public slots:
 
 signals:
     void boardSaved();
+    void savedBoardsEmpty();
 
 };
 
