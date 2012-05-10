@@ -2,6 +2,7 @@
 #define STACK_H
 
 #include <QVector>
+#include <QPainter>
 
 #include "card.h"
 
@@ -12,12 +13,16 @@ public:
     ~Stack();
 
     void addCard(Card*);
+    Card* getCardI(int) const;
+    inline Card* getRootCard() const { return cards;}
+
+
     inline void setPos(int x, int y) {posX=x; posY=y;}
     inline void setSize(int w_,int h_) {w = w_; h = h_;}
-    void draw(QPainter& painter);
+    void draw(QPainter &painter);
 
 private:
-    QVector<Card*> cards;
+    Card* cards;
     int posX;
     int posY;
     int w;

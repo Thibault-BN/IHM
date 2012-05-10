@@ -4,11 +4,42 @@ Card::Card(int i,bool face)
 {
     this->number = i;
     this->faceDown = face;
+    this->nextCard = NULL;
+    this->previousCard = NULL;
 }
 
-int & Card::getNumber()
+//Card::~Card()
+//{
+//    cout << "Carte deleted :" << this->number << endl;
+//    if (nextCard != NULL)
+//    {
+//        delete nextCard;
+//    }
+//}
+
+Card * Card::getLeaf() const
 {
-    return number;
+    Card * card = nextCard;
+
+    while (card != NULL)
+    {
+        card = card->getNextCard();
+    }
+    return card;
+}
+
+int Card::getLengthToLeaf() const
+{
+    int i = 0;
+
+    Card * card = nextCard;
+
+    while (card != NULL)
+    {
+        card = card->getNextCard();
+        i++;
+    }
+    return i;
 }
 
 void Card::draw(QPainter &painter){

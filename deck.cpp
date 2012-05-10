@@ -2,33 +2,48 @@
 
 Deck::Deck()
 {
+    cards = NULL;
 }
 
 Deck::~Deck()
 {
-    if (cards.empty())
+//    if(cards != NULL)
+//    {
+//        delete cards;
+//    }
+}
+
+void Deck::fill(Card * _deck)
+{
+    if (cards == NULL)
+        cards = _deck;
+    else
     {
-        QVector<Card*>::iterator it;
-        for (it = cards.begin(); it != cards.end(); it++)
-        {
-            delete it;
-        }
+        getLeaf()->setNextCard(_deck);
+        _deck->setPreviousCard(getLeaf());
     }
 }
 
-void Deck::fill(QVector<Card*> & _deck)
+Card * Deck::getLeaf() const
 {
-    cards = _deck;
-    iCardUp = cards.size() - 1;
+    Card * card = cards;
+
+    while (card != NULL)
+    {
+        card = card->getNextCard();
+    }
+    return card;
 }
 
 void Deck::describe()
 {
     cout << "Deck " << endl;
 
-    for (QVector<Card*>::iterator it = cards.begin(); it != cards.end(); it++)
+    Card * card = cards;
+    while (card != NULL)
     {
-        cout << " " << (*it)->getNumber();
+        cout << " " << card->getNumber();
+        card = card->getNextCard();
     }
     cout << endl;
 
@@ -36,7 +51,6 @@ void Deck::describe()
 
 void Deck::deal(int dealType)
 {
-    iCardUp = (iCardUp - dealType);
 }
 
 void Deck::draw(QPainter &painter){

@@ -5,32 +5,64 @@ using namespace std;
 
 Column::Column()
 {
+    cards = NULL;
 }
 
-Column::~Column()
+//Column::~Column()
+//{
+//    if(cards != NULL)
+//    {
+//        delete cards;
+//    }
+//}
+
+void Column::add(Card * _cards)
 {
-    if(!cards.empty())
+    if (cards == NULL)
+        cards = _cards;
+    else
     {
-        QVector<Card*>::iterator it;
-        for (it = cards.begin(); it != cards.end(); it++)
-        {
-            delete it;
-        }
+        getLeaf()->setNextCard(_cards);
+        _cards->setPreviousCard(getLeaf());
     }
 }
 
-void Column::add(QVector<Card *> &_stack)
+Card * Column::getLeaf() const
 {
-    QVector<Card*>::iterator it;
+    Card * card = cards;
 
-    for(it = _stack.begin(); it != _stack.end(); it++)
+    while (card != NULL)
     {
-        cards.push_back(*it);
+        card = card->getNextCard();
     }
+    return card;
 }
 
 void Column::describe()
 {
+    cout << "Column " << endl;
+
+    Card * card = cards;
+    while (card != NULL)
+    {
+        cout << " " << card->getNumber();
+        card = card->getNextCard();
+    }
+    cout << endl;
+}
+
+Card * Column::getCardI(int i) const
+{
+    int j=0;
+    Card * card = cards;
+
+    while (j < i)
+    {
+        card = card->getNextCard();
+        j++;
+    }
+
+    return card;
 }
 
 void Column::draw(QPainter &painter) {
@@ -38,7 +70,11 @@ void Column::draw(QPainter &painter) {
     QRect rect(posX,posY,w,h);
     painter.drawRect(rect);
 
-    for (int j=0;j<cards.size();j++) {
-        cards[j]->draw(painter);
+    Card * card = cards;
+
+    while (card != NULL)
+    {
+        card->draw(painter);
+        card = card->getNextCard();
     }
 }

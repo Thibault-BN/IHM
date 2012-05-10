@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
     board = new Board();
 
-    QAction * actionNewGame = new QAction(tr("&Nouvelle partie"),this);
+    QAction * actionNewGame = new QAction(tr("&Nouvelle partie"),this); //QIcon(":/Images/Icones/")
     actionNewGame->setShortcut(tr("Ctrl+N"));
     connect(actionNewGame, SIGNAL(triggered()), board, SLOT(newGame()));
 
@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     toolBar->addAction(actionNewGame);
 
     this->setCentralWidget(board);
-
 }
 
 MainWindow::~MainWindow()
