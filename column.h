@@ -19,7 +19,6 @@ public:
 
     //Manip cards
     void add(Card*);
-    Card * getLeaf() const;
 
     inline Card* getRootCard() const { return cards;}
     Card * getCardI(int i) const;

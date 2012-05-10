@@ -44,9 +44,14 @@ private:
     bool clickOnDeck(int x, int y);
     bool clickOnColumn(int x, int y, int &col, int &card);
 
+    bool movePossible(int lastCard, int newCard);
+
     Card* currentCard;
     int shiftX;
     int shiftY;
+    int lastX;
+    int lastY;
+    int currCol;
 
 public slots:
     void newGame();

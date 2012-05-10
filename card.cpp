@@ -17,11 +17,11 @@ Card::Card(int i,bool face)
 //    }
 //}
 
-Card * Card::getLeaf() const
+Card * Card::getLeaf()
 {
-    Card * card = nextCard;
+    Card * card = this;
 
-    while (card != NULL)
+    while (card->getNextCard() != NULL)
     {
         card = card->getNextCard();
     }

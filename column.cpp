@@ -22,20 +22,11 @@ void Column::add(Card * _cards)
         cards = _cards;
     else
     {
-        getLeaf()->setNextCard(_cards);
-        _cards->setPreviousCard(getLeaf());
+        Card* leaf = cards->getLeaf();
+        _cards->setPreviousCard(leaf);
+        leaf->setNextCard(_cards);
+        _cards->setNextCard(NULL);
     }
-}
-
-Card * Column::getLeaf() const
-{
-    Card * card = cards;
-
-    while (card != NULL)
-    {
-        card = card->getNextCard();
-    }
-    return card;
 }
 
 void Column::describe()

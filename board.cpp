@@ -156,7 +156,7 @@ void Board::updatePos(){
 
         for (int j=0; j < columnSize; j++)
         {
-            columns[i]->getCardI(j)->setPos((i+1)*ecartV+i*card_width,2*ecartH+card_height+j*10);
+            columns[i]->getCardI(j)->setPos((i+1)*ecartV+i*card_width,2*ecartH+card_height+j*25);
             columns[i]->getCardI(j)->setSize(card_width,card_height);
         }
 
@@ -177,17 +177,45 @@ void Board::mousePressEvent(QMouseEvent * e) {
     int numCol;
     int numCard;
     if (clickOnDeck(e->x(),e->y())) {
-        cout<<"on deck!"<<endl;
+
     }
     else if (clickOnColumn(e->x(),e->y(),numCol,numCard)){
-        cout<<"Col : "<<numCol<<" card : "<< numCard<<endl;
+
         currentCard = columns[numCol]->getCardI(numCard);
+        lastX = currentCard->getX();
+        lastY = currentCard->getY();
+        currCol = numCol;
         mouseIsPressed = true;
     }
 }
 
 void Board::mouseReleaseEvent(QMouseEvent *e) {
-    mouseIsPressed = false;
+    if(mouseIsPressed) {
+            int numCol;
+            int numCard;
+            if (clickOnColumn(e->x(),e->y(),numCol,numCard)) {
+                int newCardNum = columns[numCol]->getCardI(numCard)->getNumber();
+                if (movePossible(currentCard->getNumber(),newCardNum)) {
+                    //Alors on move la carte
+                    if(currentCard->getPreviousCard()!=NULL) {
+                        currentCard->getPreviousCard()->setNextCard(NULL);
+                        currentCard->getPreviousCard()->setFace(false);
+                        currentCard->setPreviousCard(NULL);
+
+                    }
+                    columns[numCol]->add(currentCard);
+                    updatePos();
+                }
+                else {
+                    currentCard->setPos(lastX,lastY);
+                }
+            }
+            else {
+                currentCard->setPos(lastX,lastY);
+            }
+            mouseIsPressed=false;
+            update();
+        }
 }
 
 void Board::mouseMoveEvent(QMouseEvent *e) {
@@ -211,17 +239,17 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
         if ( x>columns[i]->getX() && x<(columns[i]->getX()+columns[i]->getW()) ) {
             //On teste ensuite sur la hauteur
             if (columns[i]->getRootCard()->getLengthToLeaf() + 1 == 0) return false;
-            else if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*10) ) {
+            else if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*25) ) {
                 //On test sur quelle carte on est tombé et si elle est retournée
                 for (int j=0; j<(columns[i]->getRootCard()->getLengthToLeaf()+1-1);j++) {
-                    if (y>(columns[i]->getY()+j*10) && y<(columns[i]->getY()+(j+1)*10)) {
+                    if (y>(columns[i]->getY()+j*25) && y<(columns[i]->getY()+(j+1)*25)) {
                         //C'est la carte j qui est cliquée
                         if (columns[i]->getCardI(j)->getFace()) return false;
                         else {
                             col = i;
                             card = j;
                             shiftX = x-columns[i]->getX();
-                            shiftY = y-columns[i]->getY()+j*10;
+                            shiftY = y-columns[i]->getY()+j*25;
                             return true;
                         }
                     }
@@ -230,7 +258,7 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
                 col = i;
                 card = columns[i]->getRootCard()->getLengthToLeaf()+1-1;
                 shiftX = x-columns[i]->getX();
-                shiftY = y-columns[i]->getY()-card*10;
+                shiftY = y-columns[i]->getY()-card*25;
                 return true;
             }
             return false;
@@ -239,3 +267,108 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
     return false;
 }
 
+bool Board::movePossible(int lastCard, int newCard) {
+    switch(lastCard){
+
+    case 0:
+    case 39:
+        if (newCard==14||newCard==27) return true;
+        break;
+    case 1:
+    case 40:
+        if (newCard==15||newCard==28) return true;
+        break;
+    case 2:
+    case 41:
+        if (newCard==16||newCard==29) return true;
+        break;
+    case 3:
+    case 42:
+        if (newCard==17||newCard==30) return true;
+        break;
+    case 4:
+    case 43:
+        if (newCard==18||newCard==31) return true;
+        break;
+    case 5:
+    case 44:
+        if (newCard==19||newCard==32) return true;
+        break;
+    case 6:
+    case 45:
+        if (newCard==20||newCard==33) return true;
+        break;
+    case 7:
+    case 46:
+        if (newCard==21||newCard==34) return true;
+        break;
+    case 8:
+    case 47:
+        if (newCard==22||newCard==35) return true;
+        break;
+    case 9:
+    case 48:
+        if (newCard==23||newCard==36) return true;
+        break;
+    case 10:
+    case 49:
+        if (newCard==24||newCard==37) return true;
+        break;
+    case 11:
+    case 50:
+        if (newCard==25||newCard==38) return true;
+        break;
+
+    case 13:
+    case 26:
+        if (newCard==1||newCard==40) return true;
+        break;
+    case 14:
+    case 27:
+        if (newCard==2||newCard==41) return true;
+        break;
+    case 15:
+    case 28:
+        if (newCard==3||newCard==42) return true;
+        break;
+    case 16:
+    case 29:
+        if (newCard==4||newCard==43) return true;
+        break;
+    case 17:
+    case 30:
+        if (newCard==5||newCard==44) return true;
+        break;
+    case 18:
+    case 31:
+        if (newCard==6||newCard==45) return true;
+        break;
+    case 19:
+    case 32:
+        if (newCard==7||newCard==46) return true;
+        break;
+    case 20:
+    case 33:
+        if (newCard==8||newCard==47) return true;
+        break;
+    case 21:
+    case 34:
+        if (newCard==9||newCard==48) return true;
+        break;
+    case 22:
+    case 35:
+        if (newCard==10||newCard==49) return true;
+        break;
+    case 23:
+    case 36:
+        if (newCard==11||newCard==50) return true;
+        break;
+    case 24:
+    case 37:
+        if (newCard==12||newCard==51) return true;
+        break;
+    default:
+        return false;
+    }
+    return false;
+}

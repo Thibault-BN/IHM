@@ -19,9 +19,9 @@ public:
     inline Card * getPreviousCard() const { return previousCard; }
     inline void setPreviousCard(Card* _card) { previousCard = _card; }
     inline Card * getNextCard() const { return nextCard; }
-    inline void setNextCard(Card* _card) { nextCard = _card; }
+    inline void setNextCard(Card* _card) {nextCard = _card;}
 
-    Card * getLeaf() const;
+    Card * getLeaf();
     int getLengthToLeaf() const;
 
 
