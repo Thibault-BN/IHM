@@ -30,7 +30,8 @@ private:
     Column** columns;
     Stack** stack;
     Deck * deck;
-    bool mouseIsPressed;
+    bool cardIsSelectedFromStack;
+    bool cardIsSelectedFromColumn;
 
     void fillColumns(Card**);
     void randomize(int*);
@@ -43,8 +44,13 @@ private:
     void mouseMoveEvent(QMouseEvent *);
     bool clickOnDeck(int x, int y);
     bool clickOnColumn(int x, int y, int &col, int &card);
+    bool clickOnStack(int x, int y, int &numStack);
+
+    bool releaseOnColumn(int x, int y);
+    void releaseOnStack(int x, int y);
 
     bool movePossible(int lastCard, int newCard);
+    bool moveOnStackPossible(int lastCard, int newCard);
 
     Card* currentCard;
     int shiftX;
@@ -52,6 +58,7 @@ private:
     int lastX;
     int lastY;
     int currCol;
+    int currStack;
 
 public slots:
     void newGame();

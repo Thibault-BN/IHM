@@ -15,6 +15,15 @@ Stack::~Stack()
 
 void Stack::addCard(Card * card)
 {
+    if (cards == NULL) {
+        cards = card;
+    }
+    else
+    {
+        card->setPreviousCard(cards->getLeaf());
+        cards->getLeaf()->setNextCard(card);
+        card->setNextCard(NULL);
+    }
 }
 
 
@@ -36,6 +45,7 @@ void Stack::draw(QPainter &painter){
     QRect rect(posX,posY,w,h);
     painter.drawRect(rect);
 
-    if (cards != NULL) cards->getLeaf()->draw(painter);
-
+    if (cards != NULL){
+        cards->draw(painter);
+    }
 }

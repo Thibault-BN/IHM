@@ -7,7 +7,8 @@ Board::Board()
     deck = NULL;
     columns = NULL;
     stack = NULL;
-    mouseIsPressed = false;
+    cardIsSelectedFromStack = false;
+    cardIsSelectedFromColumn = false;
     setMinimumSize(800,600);
     QPalette Pal(palette());
     QColor color(76,164,35,255);
@@ -34,7 +35,7 @@ void Board::paintEvent(QPaintEvent *e) {
     for (int k=0;k<4;k++){
         stack[k]->draw(painter);
     }
-    if (mouseIsPressed) {
+    if (cardIsSelectedFromStack || cardIsSelectedFromColumn) {
         //On redessine la dernière carte pour qu'elle soit au dessus
         currentCard->draw(painter);
     }
@@ -166,6 +167,11 @@ void Board::updatePos(){
     for (int k=0;k<4;k++) {
         stack[k]->setPos((k+4)*ecartV+(k+3)*card_width,ecartH);
         stack[k]->setSize(card_width,card_height);
+        Card* card = stack[k]->getRootCard();
+        while(card!= NULL) {
+            card->setPos((k+4)*ecartV+(k+3)*card_width,ecartH);
+            card = card->getNextCard();
+        }
     }
 }
 
@@ -178,8 +184,9 @@ void Board::mousePressEvent(QMouseEvent * e) {
 
     int numCol;
     int numCard;
+    int numStack;
     if (clickOnDeck(e->x(),e->y())) {
-
+        //On deale
     }
     else if (clickOnColumn(e->x(),e->y(),numCol,numCard)){
 
@@ -188,49 +195,126 @@ void Board::mousePressEvent(QMouseEvent * e) {
             lastX = currentCard->getX();
             lastY = currentCard->getY();
             currCol = numCol;
-            mouseIsPressed = true;
+            cardIsSelectedFromColumn = true;
+        }
+    }
+    else if (clickOnStack(e->x(),e->y(),numStack)) {
+        if (stack[numStack]->getRootCard() != NULL) {
+            currentCard = stack[numStack]->getRootCard()->getLeaf();
+            lastX = currentCard->getX();
+            lastY = currentCard->getY();
+            currStack = numStack;
+            cardIsSelectedFromStack = true;
         }
     }
 }
 
 void Board::mouseReleaseEvent(QMouseEvent *e) {
-    if(mouseIsPressed) {
-            int numCol;
-            int numCard;
-            if (clickOnColumn(e->x(),e->y(),numCol,numCard)) {
-                int newCardNum = 52;
-                if (numCard!=52) {
-                    newCardNum = columns[numCol]->getCardI(numCard)->getNumber();
-                }
-                    if (movePossible(currentCard->getNumber(),newCardNum)) {
-                        //Alors on move la carte
-                        if(currentCard->getPreviousCard()!=NULL) {
-                            currentCard->getPreviousCard()->setNextCard(NULL);
-                            currentCard->getPreviousCard()->setFace(false);
-                            currentCard->setPreviousCard(NULL);
+    if(cardIsSelectedFromStack || cardIsSelectedFromColumn) {
+        if (!releaseOnColumn(e->x(),e->y())) {
+            releaseOnStack(e->x(),e->y());
+        }
+        cardIsSelectedFromStack=false;
+        cardIsSelectedFromColumn = false;
+        update();
+    }
+}
 
-                        }
-                        else {
-                            columns[currCol]->setRootCard(NULL);
-                        }
-                        columns[numCol]->add(currentCard);
-                        updatePos();
+bool Board::releaseOnColumn(int x, int y) {
+    int numCol;
+    int numCard;
+    if (clickOnColumn(x,y,numCol,numCard)) {
+        int newCardNum = 52;
+        if (numCard!=52) {
+            newCardNum = columns[numCol]->getCardI(numCard)->getNumber();
+        }
+            if (movePossible(currentCard->getNumber(),newCardNum)) {
+                //Alors on move la carte
+                if(currentCard->getPreviousCard()!=NULL) {
+                    currentCard->getPreviousCard()->setNextCard(NULL);
+                    currentCard->getPreviousCard()->setFace(false);
+                    currentCard->setPreviousCard(NULL);
+
+                }
+                else {
+                    if (cardIsSelectedFromColumn) {
+                        columns[currCol]->setRootCard(NULL);
                     }
-                    else {
-                        currentCard->setPos(lastX,lastY);
+                    if (cardIsSelectedFromStack) {
+                        stack[currStack]->setRootCard(NULL);
                     }
+                }
+                columns[numCol]->add(currentCard);
+                updatePos();
+                return true;
+            }
+            else {
+                Card* card = currentCard;
+                int j=0;
+                while(card!=NULL) {
+                    card->setPos(lastX,lastY+j*ECART_CARTE);
+                    j++;
+                    card = card->getNextCard();
+                }
+            }
+
+    }
+    else {
+        Card* card = currentCard;
+        int j=0;
+        while(card!=NULL) {
+            card->setPos(lastX,lastY+j*ECART_CARTE);
+            j++;
+            card = card->getNextCard();
+        }
+    }
+    return false;
+}
+
+void Board::releaseOnStack(int x, int y) {
+    int numStack;
+    //Si on bouge plus d'une carte, on ne peut déjà pas lacher sur un stack
+
+    if (currentCard->getNextCard()==NULL && clickOnStack(x,y,numStack)) {
+        int numCard;
+        if(stack[numStack]->getRootCard()==NULL) {
+            numCard=52;
+        }
+        else {
+            numCard = stack[numStack]->getRootCard()->getLeaf()->getNumber();
+        }
+
+        if (moveOnStackPossible(currentCard->getNumber(),numCard)) {
+            //Alors on bouge
+            if(currentCard->getPreviousCard()!=NULL) {
+                currentCard->getPreviousCard()->setNextCard(NULL);
+                currentCard->getPreviousCard()->setFace(false);
+                currentCard->setPreviousCard(NULL);
 
             }
             else {
-                currentCard->setPos(lastX,lastY);
+                if (cardIsSelectedFromColumn) {
+                    columns[currCol]->setRootCard(NULL);
+                }
+                if (cardIsSelectedFromStack) {
+                    stack[currStack]->setRootCard(NULL);
+                }
             }
-            mouseIsPressed=false;
-            update();
+            stack[numStack]->addCard(currentCard);
+            updatePos();
         }
+        else {
+            currentCard->setPos(lastX,lastY);
+        }
+
+    }
+    else {
+        currentCard->setPos(lastX,lastY);
+    }
 }
 
 void Board::mouseMoveEvent(QMouseEvent *e) {
-    if (mouseIsPressed) {
+    if (cardIsSelectedFromStack || cardIsSelectedFromColumn) {
         //On bouge la carte courante et les suivantes
         Card* card = currentCard;
         int j=0;
@@ -290,6 +374,20 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
                 return true;
             }
             return false;
+        }
+    }
+    return false;
+}
+
+bool Board::clickOnStack(int x, int y, int &numStack){
+    for (int i = 0; i<4; i++) {
+        if ( x>stack[i]->getX() && x<(stack[i]->getX()+stack[i]->getW()) ) {
+            if( y>stack[i]->getY() && y<(stack[i]->getY()+stack[i]->getH()) ) {
+                numStack = i;
+                shiftX = x-stack[i]->getX();
+                shiftY = y-stack[i]->getY();
+                return true;
+            }
         }
     }
     return false;
@@ -404,5 +502,11 @@ bool Board::movePossible(int lastCard, int newCard) {
     default:
         return false;
     }
+    return false;
+}
+
+bool Board::moveOnStackPossible(int lastCard, int newCard) {
+    if (lastCard==(newCard+1)) return true;
+    if ((lastCard==0 || lastCard==13 || lastCard==26 || lastCard==39) && newCard==52) return true;
     return false;
 }
