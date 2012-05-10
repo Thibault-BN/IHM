@@ -42,6 +42,8 @@ private:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *);
+
     bool clickOnDeck(int x, int y);
     bool clickOnColumn(int x, int y, int &col, int &card);
     bool clickOnStack(int x, int y, int &numStack);

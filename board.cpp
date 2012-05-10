@@ -170,6 +170,7 @@ void Board::updatePos(){
         Card* card = stack[k]->getRootCard();
         while(card!= NULL) {
             card->setPos((k+4)*ecartV+(k+3)*card_width,ecartH);
+            card->setSize(card_width,card_height);
             card = card->getNextCard();
         }
     }
@@ -205,6 +206,39 @@ void Board::mousePressEvent(QMouseEvent * e) {
             lastY = currentCard->getY();
             currStack = numStack;
             cardIsSelectedFromStack = true;
+        }
+    }
+}
+
+void Board::mouseDoubleClickEvent(QMouseEvent *e){
+    int numCol;
+    int numCard;
+
+    if (clickOnColumn(e->x(),e->y(),numCol,numCard)) {
+        if (numCard!=52) {
+            Card* card = columns[numCol]->getCardI(numCard);
+            if (card->getNextCard()==NULL) {
+                for (int i=0;i<4;i++) {
+                    int numCardInStack = 52;
+                    if (stack[i]->getRootCard()!=NULL) numCardInStack = stack[i]->getRootCard()->getLeaf()->getNumber();
+                    if (moveOnStackPossible(card->getNumber(),numCardInStack)) {
+                        //Move
+                        if(card->getPreviousCard()!=NULL) {
+                            card->getPreviousCard()->setNextCard(NULL);
+                            card->getPreviousCard()->setFace(false);
+                            card->setPreviousCard(NULL);
+
+                        }
+                        else {
+                            columns[numCol]->setRootCard(NULL);
+                        }
+                        stack[i]->addCard(currentCard);
+                        updatePos();
+                        update();
+                        break;
+                    }
+                }
+            }
         }
     }
 }
