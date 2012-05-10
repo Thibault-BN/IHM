@@ -854,6 +854,17 @@ void Board::restorePreviousBoard()
 
 }
 
+void Board::restartGame()
+{
+    while (savedBoards.size() > 1)
+    {
+        delete savedBoards.back();
+        savedBoards.removeLast();
+    }
+
+    restorePreviousBoard();
+}
+
 void Board::gagne() {
     bool gagne = true;
     for (int i = 0; i<4; i++) {

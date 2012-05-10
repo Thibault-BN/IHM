@@ -29,8 +29,6 @@ public:
     Board();
     //    ~Board();
 
-    void restartGame();
-
 private:
     Column** columns;
     Stack** stack;
@@ -79,6 +77,7 @@ private:
 public slots:
     void newGame();
     void restorePreviousBoard();
+    void restartGame();
 
 signals:
     void boardSaved();

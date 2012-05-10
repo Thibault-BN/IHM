@@ -14,7 +14,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     actionQuit->setShortcut(tr("Ctrl+Q"));
     connect(actionQuit,SIGNAL(triggered()),this,SLOT(close()));
 
-    QAction * actionRestart = new QAction(tr("&Recommencer partie"),this);
+    actionRestart = new QAction(tr("&Recommencer partie"),this);
+    actionRestart->setShortcut(tr("Ctrl+R"));
+    actionRestart->setEnabled(false);
+    connect(actionRestart, SIGNAL(triggered()), board, SLOT(restartGame()));
 
     actionUndo = new QAction(tr("&Annuler mouvement"), this);
     actionUndo->setShortcut(tr("Ctrl+Z"));
@@ -35,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QToolBar* toolBar = addToolBar("Fichier");
     toolBar->addAction(actionNewGame);
     toolBar->addAction(actionUndo);
+    toolBar->addAction(actionRestart);
 
     QStatusBar * stBar = statusBar();
 
