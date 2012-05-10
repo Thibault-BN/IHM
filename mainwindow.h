@@ -21,10 +21,11 @@ public:
 private:
     Board* board;
     QAction * actionUndo;
+    QAction * actionRestart;
 
 public slots:
-    inline void actionPerformed() { this->actionUndo->setEnabled(true); }
-    inline void noMoreSavedBoards() {this->actionUndo->setEnabled(false);}
+    inline void actionPerformed() { this->actionUndo->setEnabled(true); this->actionRestart->setEnabled(true); }
+    inline void noMoreSavedBoards() {this->actionUndo->setEnabled(false); this->actionRestart->setEnabled(false);}
 };
 
 #endif // MAINWINDOW_H
