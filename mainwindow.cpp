@@ -4,7 +4,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     setMinimumSize(800,500);
 
-    board = new Board();
+    board = new Board(this);
 
     QAction * actionNewGame = new QAction(tr("&Nouvelle partie"),this); //QIcon(":/Images/Icones/")
     actionNewGame->setShortcut(tr("Ctrl+N"));

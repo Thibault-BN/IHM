@@ -16,6 +16,7 @@
 #include <QRect>
 #include <QBrush>
 #include <QMouseEvent>
+#include <QMainWindow>
 
 using namespace std;
 
@@ -23,10 +24,11 @@ class Board : public QWidget
 {
     Q_OBJECT
 public:
-    Board();
-//    ~Board();
+    Board(QMainWindow* m);
+    //    ~Board();
 
 private:
+    QMainWindow * mainWindow;
     Column** columns;
     Stack** stack;
     Deck * deck;

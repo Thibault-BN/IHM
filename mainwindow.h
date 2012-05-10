@@ -7,7 +7,6 @@
 #include <QToolBar>
 #include "board.h"
 
-
 using namespace std;
 
 class MainWindow : public QMainWindow
