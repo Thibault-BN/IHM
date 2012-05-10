@@ -22,7 +22,7 @@ public:
     inline void setNextCard(Card* _card) {nextCard = _card;}
 
     Card * getLeaf();
-    int getLengthToLeaf() const;
+    int getLengthToLeaf();
 
 
     void draw(QPainter &painter); //arguments : coordonnees

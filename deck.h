@@ -18,6 +18,7 @@ public:
     //Manips cards
     void fill(Card*);
     Card * getLeaf() const;
+    Card * getCardI(int i) const;
 
     void deal(int); //Deal 3 ou 1 ?
     void describe();
@@ -30,13 +31,19 @@ public:
     inline int &getY() {return posY;}
     inline int &getW() {return w;}
     inline int &getH() {return h;}
+    inline void setIndex(int i) {index = i;}
+    inline void setEcart(int ec) {ecart=ec;}
+    inline Card* getRootCard() {return cards;}
+    inline int getIndex() {return index;}
 
 private:
     Card* cards;
+    int index;
     int posX;
     int posY;
     int w;
     int h;
+    int ecart;
 };
 
 #endif // DECK_H

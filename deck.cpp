@@ -49,12 +49,42 @@ void Deck::describe()
 
 }
 
-void Deck::deal(int dealType)
+Card * Deck::getCardI(int i) const
 {
+    int j=0;
+    Card * card = cards;
+
+    while (j < i)
+    {
+        card = card->getNextCard();
+        j++;
+    }
+
+    return card;
 }
 
 void Deck::draw(QPainter &painter){
 
     QRect rect(posX,posY,w,h);
-    painter.drawImage(rect,QImage(":images/dos3.png"));
+    if (index!=cards->getLengthToLeaf()) {
+        painter.drawImage(rect,QImage(":images/dos3.png"));
+    }
+    else {
+        painter.drawRect(rect);
+    }
+    QRect rect2(posX+ecart,posY,w,h);
+    painter.drawRect(rect2);
+
+    if(index!=-1) {
+        getCardI(index)->draw(painter);
+    }
+}
+
+void Deck::deal(int i) {
+    if (index == cards->getLengthToLeaf()) {
+        index = -1;
+    }
+    else {
+        index += i;
+    }
 }

@@ -28,13 +28,13 @@ Card * Card::getLeaf()
     return card;
 }
 
-int Card::getLengthToLeaf() const
+int Card::getLengthToLeaf()
 {
     int i = 0;
 
-    Card * card = nextCard;
+    Card * card = this;
 
-    while (card != NULL)
+    while (card->getNextCard() != NULL)
     {
         card = card->getNextCard();
         i++;

@@ -82,6 +82,7 @@ void Board::newGame()
 
     this->deck = new Deck();
     deck->fill(root);
+    deck->setIndex(-1);
 
     deck->describe();
 
@@ -151,6 +152,19 @@ void Board::updatePos(){
 
     deck->setPos(ecartV,ecartH);
     deck->setSize(card_width,card_height);
+    deck->setEcart(ecartV+card_width);
+    Card* cardD = deck->getRootCard();
+    while(cardD!= NULL) {
+        cardD->setPos(ecartV,ecartH);
+        cardD->setSize(card_width,card_height);
+        cardD->setFace(true);
+        cardD = cardD->getNextCard();
+    }
+    if (deck->getIndex() != -1){
+        deck->getCardI(deck->getIndex())->setPos(2*ecartV+card_width,ecartH);
+        deck->getCardI(deck->getIndex())->setFace(false);
+    }
+
     for (int i = 0; i<7;i++) {
         columns[i]->setPos((i+1)*ecartV+i*card_width,2*ecartH+card_height);
         columns[i]->setSize(card_width,card_height);
@@ -187,7 +201,11 @@ void Board::mousePressEvent(QMouseEvent * e) {
     int numCard;
     int numStack;
     if (clickOnDeck(e->x(),e->y())) {
-        //On deale
+
+        //Selon deal 1 ou deal 3?
+        deck->deal(1);
+        updatePos();
+        update();
     }
     else if (clickOnColumn(e->x(),e->y(),numCol,numCard)){
 
