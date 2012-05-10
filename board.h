@@ -28,7 +28,6 @@ public:
     //    ~Board();
 
     void saveBoard() const;
-    void restorePreviousBoard();
     void restartGame();
 
 private:
@@ -74,6 +73,7 @@ private:
 
 public slots:
     void newGame();
+    void restorePreviousBoard();
 
 };
 

@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     column.cpp \
     deck.cpp \
     stack.cpp \
-    mouvement.cpp \
     savedboard.cpp
 
 HEADERS  += mainwindow.h \
@@ -26,7 +25,6 @@ HEADERS  += mainwindow.h \
     column.h \
     deck.h \
     stack.h \
-    mouvement.h \
     savedboard.h
 
 FORMS    +=

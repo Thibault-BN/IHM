@@ -46,8 +46,6 @@ private:
 
     Card* previousCard;
     Card* nextCard;
-
-
 };
 
 #endif // CARD_H
