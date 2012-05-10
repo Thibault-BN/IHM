@@ -37,6 +37,7 @@ private:
     Deck * deck;
     bool cardIsSelectedFromStack;
     bool cardIsSelectedFromColumn;
+    bool cardIsSelectedFromDeck;
 
     void fillColumns(Card**);
     void randomize(int*);
@@ -50,6 +51,7 @@ private:
     void mouseDoubleClickEvent(QMouseEvent *);
 
     bool clickOnDeck(int x, int y);
+    bool clickOnReverseDeck(int x, int y);
     bool clickOnColumn(int x, int y, int &col, int &card);
     bool clickOnStack(int x, int y, int &numStack);
 

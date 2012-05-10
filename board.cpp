@@ -9,6 +9,7 @@ Board::Board()
     stack = NULL;
     cardIsSelectedFromStack = false;
     cardIsSelectedFromColumn = false;
+    cardIsSelectedFromDeck = false;
     setMinimumSize(800,600);
     QPalette Pal(palette());
     QColor color(76,164,35,255);
@@ -35,7 +36,7 @@ void Board::paintEvent(QPaintEvent *e) {
     for (int k=0;k<4;k++){
         stack[k]->draw(painter);
     }
-    if (cardIsSelectedFromStack || cardIsSelectedFromColumn) {
+    if (cardIsSelectedFromStack || cardIsSelectedFromColumn || cardIsSelectedFromDeck) {
         //On redessine la dernière carte pour qu'elle soit au dessus
         currentCard->draw(painter);
     }
@@ -207,6 +208,12 @@ void Board::mousePressEvent(QMouseEvent * e) {
         updatePos();
         update();
     }
+    else if (clickOnReverseDeck(e->x(),e->y())) {
+        currentCard = deck->getCardI(deck->getIndex());
+        lastX = currentCard->getX();
+        lastY = currentCard->getY();
+        cardIsSelectedFromDeck = true;
+    }
     else if (clickOnColumn(e->x(),e->y(),numCol,numCard)){
 
         if(numCard!=52) {
@@ -259,15 +266,46 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
             }
         }
     }
+
+    else if (clickOnReverseDeck(e->x(),e->y())) {
+        Card* card = deck->getCardI(deck->getIndex());
+        for (int i=0;i<4;i++) {
+            int numCardInStack = 52;
+            if (stack[i]->getRootCard()!=NULL) numCardInStack = stack[i]->getRootCard()->getLeaf()->getNumber();
+            if (moveOnStackPossible(card->getNumber(),numCardInStack)) {
+                //Move
+                if (card->getPreviousCard()==NULL) {
+                    deck->setRoot(card->getNextCard());
+                    if(card->getNextCard()!=NULL) card->getNextCard()->setPreviousCard(NULL);
+                    card->setNextCard(NULL);
+                }
+                else if (card->getNextCard()==NULL){
+                    card->getPreviousCard()->setNextCard(NULL);
+                    card->setPreviousCard(NULL);
+                }
+                else {
+                    card->getPreviousCard()->setNextCard(card->getNextCard());
+                    card->getNextCard()->setPreviousCard(card->getPreviousCard());
+                    card->setPreviousCard(NULL);
+                    card->setNextCard(NULL);
+                }
+                stack[i]->addCard(currentCard);
+                updatePos();
+                update();
+                break;
+            }
+        }
+    }
 }
 
 void Board::mouseReleaseEvent(QMouseEvent *e) {
-    if(cardIsSelectedFromStack || cardIsSelectedFromColumn) {
+    if(cardIsSelectedFromStack || cardIsSelectedFromColumn || cardIsSelectedFromDeck) {
         if (!releaseOnColumn(e->x(),e->y())) {
             releaseOnStack(e->x(),e->y());
         }
         cardIsSelectedFromStack=false;
         cardIsSelectedFromColumn = false;
+        cardIsSelectedFromDeck = false;
         update();
     }
 }
@@ -301,23 +339,33 @@ bool Board::releaseOnColumn(int x, int y) {
                 return true;
             }
             else {
-                Card* card = currentCard;
-                int j=0;
-                while(card!=NULL) {
-                    card->setPos(lastX,lastY+j*ECART_CARTE);
-                    j++;
-                    card = card->getNextCard();
+                if (!cardIsSelectedFromDeck) {
+                    Card* card = currentCard;
+                    int j=0;
+                    while(card!=NULL) {
+                        card->setPos(lastX,lastY+j*ECART_CARTE);
+                        j++;
+                        card = card->getNextCard();
+                    }
+                }
+                else {
+                    currentCard->setPos(lastX,lastY);
                 }
             }
 
     }
     else {
-        Card* card = currentCard;
-        int j=0;
-        while(card!=NULL) {
-            card->setPos(lastX,lastY+j*ECART_CARTE);
-            j++;
-            card = card->getNextCard();
+        if (!cardIsSelectedFromDeck) {
+            Card* card = currentCard;
+            int j=0;
+            while(card!=NULL) {
+                card->setPos(lastX,lastY+j*ECART_CARTE);
+                j++;
+                card = card->getNextCard();
+            }
+        }
+        else {
+            currentCard->setPos(lastX,lastY);
         }
     }
     return false;
@@ -377,12 +425,28 @@ void Board::mouseMoveEvent(QMouseEvent *e) {
         }
         update();
     }
+    else if (cardIsSelectedFromDeck) {
+        //On ne bouge que la carte selectionnée
+        currentCard->setPos(e->x()-shiftX,e->y()-shiftY);
+        update();
+    }
 }
 
 bool Board::clickOnDeck(int x, int y) {
 
     if (x>deck->getX() && x<(deck->getX()+deck->getW()) && y>deck->getY() && y<(deck->getY()+deck->getH()))
         return true;
+    return false;
+}
+
+bool Board::clickOnReverseDeck(int x, int y){
+    if (x>(deck->getX()+deck->getEcart()) && x<(deck->getX()+deck->getEcart()+deck->getW()) && y>deck->getY() && y<(deck->getY()+deck->getH())){
+        if (deck->getIndex() != -1) {
+            shiftX = x-(deck->getX()+deck->getEcart());
+            shiftY = y-deck->getY();
+            return true;
+        }
+    }
     return false;
 }
 
