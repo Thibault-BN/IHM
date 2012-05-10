@@ -4,10 +4,11 @@
 #include "deck.h"
 #include "card.h"
 #include "stack.h"
+#include "savedboard.h"
 
 #include <algorithm>
 #include <iostream>
-#include <QVector>
+#include <QList>
 #include <QWidget>
 #include <QPainter>
 #include <QPoint>
@@ -25,6 +26,10 @@ class Board : public QWidget
 public:
     Board();
     //    ~Board();
+
+    void saveBoard() const;
+    void restorePreviousBoard();
+    void restartGame();
 
 private:
     Column** columns;
@@ -61,6 +66,9 @@ private:
     int lastY;
     int currCol;
     int currStack;
+
+    //Sauvegarde
+    QList<SavedBoard*> savedBoards;
 
 public slots:
     void newGame();

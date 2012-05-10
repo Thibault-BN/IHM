@@ -562,3 +562,27 @@ bool Board::moveOnStackPossible(int lastCard, int newCard) {
     if ((lastCard==0 || lastCard==13 || lastCard==26 || lastCard==39) && newCard==52) return true;
     return false;
 }
+
+void Board::saveBoard() const
+{
+    SavedBoard * board = new SavedBoard();
+
+    for (int i = 0; i < 4; i++)
+    {
+        board->saveStack(i,stack[i]->getRootCard());
+    }
+
+    for (int i = 0; i  < 7; i++)
+    {
+        board->saveColumn(i, columns[i]->getRootCard());
+    }
+
+    board->saveDeck(NULL);
+
+    //Rajouter le temps
+}
+
+void Board::restorePreviousBoard()
+{
+
+}
