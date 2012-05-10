@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QToolBar* toolBar = addToolBar("Fichier");
     toolBar->addAction(actionNewGame);
 
+    QStatusBar * stBar = statusBar();
+
     this->setCentralWidget(board);
 }
 
