@@ -249,7 +249,7 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
                             col = i;
                             card = j;
                             shiftX = x-columns[i]->getX();
-                            shiftY = y-columns[i]->getY()+j*25;
+                            shiftY = y-columns[i]->getY()-j*25;
                             return true;
                         }
                     }
