@@ -12,19 +12,19 @@ public:
     Card(int, bool face);
 //    ~Card();
 
-    inline const int & getNumber() const { return number; }
+    inline int getNumber() const { return number; }
     inline bool getFace() const { return faceDown; }
+    void setFace(bool face);
+
     inline Card * getPreviousCard() const { return previousCard; }
     inline void setPreviousCard(Card* _card) { previousCard = _card; }
     inline Card * getNextCard() const { return nextCard; }
     inline void setNextCard(Card* _card) { nextCard = _card; }
+
     Card * getLeaf() const;
     int getLengthToLeaf() const;
 
 
-    int & getNumber();
-    void setFace(bool face);
-    inline bool getFace() {return faceDown;}
     void draw(QPainter &painter); //arguments : coordonnees
     inline void setPos(int x, int y) {posX=x; posY=y;}
     inline void setSize(int w_, int h_) {w=w_; h=h_;}
