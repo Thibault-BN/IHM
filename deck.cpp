@@ -76,6 +76,9 @@ void Deck::draw(QPainter &painter){
     painter.drawRect(rect2);
 
     if(index!=-1) {
+        if (index>0) {
+            getCardI(index-1)->draw(painter);
+        }
         getCardI(index)->draw(painter);
     }
 }

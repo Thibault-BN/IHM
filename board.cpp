@@ -164,6 +164,10 @@ void Board::updatePos(){
     if (deck->getIndex() != -1){
         deck->getCardI(deck->getIndex())->setPos(2*ecartV+card_width,ecartH);
         deck->getCardI(deck->getIndex())->setFace(false);
+        if (deck->getIndex() > 0) {
+            deck->getCardI(deck->getIndex()-1)->setPos(2*ecartV+card_width,ecartH);
+            deck->getCardI(deck->getIndex()-1)->setFace(false);
+        }
     }
 
     for (int i = 0; i<7;i++) {
@@ -289,6 +293,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
                     card->setPreviousCard(NULL);
                     card->setNextCard(NULL);
                 }
+                deck->setIndex(deck->getIndex()-1);
                 stack[i]->addCard(currentCard);
                 updatePos();
                 update();
@@ -320,7 +325,25 @@ bool Board::releaseOnColumn(int x, int y) {
         }
             if (movePossible(currentCard->getNumber(),newCardNum)) {
                 //Alors on move la carte
-                if(currentCard->getPreviousCard()!=NULL) {
+                if (cardIsSelectedFromDeck){
+                    if (currentCard->getPreviousCard()==NULL) {
+                        deck->setRoot(currentCard->getNextCard());
+                        if(currentCard->getNextCard()!=NULL) currentCard->getNextCard()->setPreviousCard(NULL);
+                        currentCard->setNextCard(NULL);
+                    }
+                    else if (currentCard->getNextCard()==NULL){
+                        currentCard->getPreviousCard()->setNextCard(NULL);
+                        currentCard->setPreviousCard(NULL);
+                    }
+                    else {
+                        currentCard->getPreviousCard()->setNextCard(currentCard->getNextCard());
+                        currentCard->getNextCard()->setPreviousCard(currentCard->getPreviousCard());
+                        currentCard->setPreviousCard(NULL);
+                        currentCard->setNextCard(NULL);
+                    }
+                    deck->setIndex(deck->getIndex()-1);
+                }
+                else if(currentCard->getPreviousCard()!=NULL) {
                     currentCard->getPreviousCard()->setNextCard(NULL);
                     currentCard->getPreviousCard()->setFace(false);
                     currentCard->setPreviousCard(NULL);
@@ -375,7 +398,7 @@ void Board::releaseOnStack(int x, int y) {
     int numStack;
     //Si on bouge plus d'une carte, on ne peut déjà pas lacher sur un stack
 
-    if (currentCard->getNextCard()==NULL && clickOnStack(x,y,numStack)) {
+    if ((currentCard->getNextCard()==NULL || cardIsSelectedFromDeck) && clickOnStack(x,y,numStack)) {
         int numCard;
         if(stack[numStack]->getRootCard()==NULL) {
             numCard=52;
@@ -386,7 +409,25 @@ void Board::releaseOnStack(int x, int y) {
 
         if (moveOnStackPossible(currentCard->getNumber(),numCard)) {
             //Alors on bouge
-            if(currentCard->getPreviousCard()!=NULL) {
+            if (cardIsSelectedFromDeck){
+                if (currentCard->getPreviousCard()==NULL) {
+                    deck->setRoot(currentCard->getNextCard());
+                    if(currentCard->getNextCard()!=NULL) currentCard->getNextCard()->setPreviousCard(NULL);
+                    currentCard->setNextCard(NULL);
+                }
+                else if (currentCard->getNextCard()==NULL){
+                    currentCard->getPreviousCard()->setNextCard(NULL);
+                    currentCard->setPreviousCard(NULL);
+                }
+                else {
+                    currentCard->getPreviousCard()->setNextCard(currentCard->getNextCard());
+                    currentCard->getNextCard()->setPreviousCard(currentCard->getPreviousCard());
+                    currentCard->setPreviousCard(NULL);
+                    currentCard->setNextCard(NULL);
+                }
+                deck->setIndex(deck->getIndex()-1);
+            }
+            else if(currentCard->getPreviousCard()!=NULL) {
                 currentCard->getPreviousCard()->setNextCard(NULL);
                 currentCard->getPreviousCard()->setFace(false);
                 currentCard->setPreviousCard(NULL);
