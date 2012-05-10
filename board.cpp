@@ -89,6 +89,8 @@ void Board::newGame()
 
     updatePos();
     update();
+
+    emit savedBoardsEmpty();
 }
 
 void Board::fillColumns(Card** root)

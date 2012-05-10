@@ -55,5 +55,9 @@
         <file>images/valetCO.png</file>
         <file>images/valetP.png</file>
         <file>images/valetT.png</file>
+        <file>images/icones/new.png</file>
+        <file>images/icones/quit.png</file>
+        <file>images/icones/restart.png</file>
+        <file>images/icones/undo.png</file>
     </qresource>
 </RCC>
