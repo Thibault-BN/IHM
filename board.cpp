@@ -2,6 +2,8 @@
 
 #define ECART_CARTE 25
 
+int Board::dealType =3;
+
 Board::Board()
 {
     deck = NULL;
@@ -29,7 +31,7 @@ void Board::paintEvent(QPaintEvent *e) {
     QWidget::paintEvent(e);
     QPainter painter (this);
 
-    deck->draw(painter);
+    deck->draw(painter,dealType);
     for (int i = 0; i<7;i++) {
         columns[i]->draw(painter);
     }
@@ -164,12 +166,28 @@ void Board::updatePos(){
         cardD->setFace(true);
         cardD = cardD->getNextCard();
     }
-    if (deck->getIndex() != -1){
-        deck->getCardI(deck->getIndex())->setPos(2*ecartV+card_width,ecartH);
-        deck->getCardI(deck->getIndex())->setFace(false);
-        if (deck->getIndex() > 0) {
-            deck->getCardI(deck->getIndex()-1)->setPos(2*ecartV+card_width,ecartH);
-            deck->getCardI(deck->getIndex()-1)->setFace(false);
+    if (dealType==1) {
+        if (deck->getIndex() != -1){
+            deck->getCardI(deck->getIndex())->setPos(2*ecartV+card_width,ecartH);
+            deck->getCardI(deck->getIndex())->setFace(false);
+            if (deck->getIndex() > 0) {
+                deck->getCardI(deck->getIndex()-1)->setPos(2*ecartV+card_width,ecartH);
+                deck->getCardI(deck->getIndex()-1)->setFace(false);
+            }
+        }
+    }
+    else if (dealType==3){
+        if (deck->getIndex()<2) {
+            for (int i=0;i<=deck->getIndex();i++) {
+                deck->getCardI(i)->setPos(2*ecartV+card_width+i*15,ecartH);
+                deck->getCardI(i)->setFace(false);
+            }
+        }
+        else {
+            for (int j=0; j<3; j++) {
+                deck->getCardI(deck->getIndex()-2+j)->setPos(2*ecartV+card_width+j*15,ecartH);
+                deck->getCardI(deck->getIndex()-2+j)->setFace(false);
+            }
         }
     }
 
@@ -212,7 +230,7 @@ void Board::mousePressEvent(QMouseEvent * e) {
         saveBoard();
 
         //Selon deal 1 ou deal 3?
-        deck->deal(1);
+        deck->deal(dealType);
         updatePos();
         update();
     }
@@ -501,11 +519,23 @@ bool Board::clickOnDeck(int x, int y) {
 }
 
 bool Board::clickOnReverseDeck(int x, int y){
-    if (x>(deck->getX()+deck->getEcart()) && x<(deck->getX()+deck->getEcart()+deck->getW()) && y>deck->getY() && y<(deck->getY()+deck->getH())){
-        if (deck->getIndex() != -1) {
-            shiftX = x-(deck->getX()+deck->getEcart());
-            shiftY = y-deck->getY();
-            return true;
+
+    if(deck->getIndex()>=2 || dealType==1){
+        if (x>(deck->getX()+deck->getEcart()+(dealType-1)*15) && x<(deck->getX()+deck->getEcart()+deck->getW()+(dealType-1)*15) && y>deck->getY() && y<(deck->getY()+deck->getH())){
+            if (deck->getIndex() != -1) {
+                shiftX = x-(deck->getX()+deck->getEcart()+(dealType-1)*15);
+                shiftY = y-deck->getY();
+                return true;
+            }
+        }
+    }
+    else {
+        if (x>(deck->getX()+deck->getEcart()+(deck->getIndex()*15)) && x<(deck->getX()+deck->getEcart()+deck->getW()+deck->getIndex()*15) && y>deck->getY() && y<(deck->getY()+deck->getH())){
+            if (deck->getIndex() != -1) {
+                shiftX = x-(deck->getX()+deck->getEcart()+deck->getIndex()*15);
+                shiftY = y-deck->getY();
+                return true;
+            }
         }
     }
     return false;

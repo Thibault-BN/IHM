@@ -23,7 +23,7 @@ public:
     void deal(int); //Deal 3 ou 1 ?
     void describe();
 
-    void draw(QPainter &painter);
+    void draw(QPainter &painter, int dealT);
 
     inline void setPos(int x, int y) {posX=x; posY=y;}
     inline void setSize(int w_,int h_) {w = w_; h = h_;}
