@@ -49,3 +49,10 @@ void Stack::draw(QPainter &painter){
         cards->draw(painter);
     }
 }
+
+int Stack::getSize() {
+    if (cards==NULL) {
+        return 0;
+    }
+    else return (cards->getLengthToLeaf()+1);
+}

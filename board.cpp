@@ -264,6 +264,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
                         stack[i]->addCard(currentCard);
                         updatePos();
                         update();
+                        gagne();
                         break;
                     }
                 }
@@ -295,8 +296,10 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
                 }
                 deck->setIndex(deck->getIndex()-1);
                 stack[i]->addCard(currentCard);
+
                 updatePos();
                 update();
+                gagne();
                 break;
             }
         }
@@ -306,7 +309,9 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
 void Board::mouseReleaseEvent(QMouseEvent *e) {
     if(cardIsSelectedFromStack || cardIsSelectedFromColumn || cardIsSelectedFromDeck) {
         if (!releaseOnColumn(e->x(),e->y())) {
-            releaseOnStack(e->x(),e->y());
+            if (releaseOnStack(e->x(),e->y())) {
+                gagne();
+            }
         }
         cardIsSelectedFromStack=false;
         cardIsSelectedFromColumn = false;
@@ -394,7 +399,7 @@ bool Board::releaseOnColumn(int x, int y) {
     return false;
 }
 
-void Board::releaseOnStack(int x, int y) {
+bool Board::releaseOnStack(int x, int y) {
     int numStack;
     //Si on bouge plus d'une carte, on ne peut déjà pas lacher sur un stack
 
@@ -443,6 +448,7 @@ void Board::releaseOnStack(int x, int y) {
             }
             stack[numStack]->addCard(currentCard);
             updatePos();
+            return true;
         }
         else {
             currentCard->setPos(lastX,lastY);
@@ -452,6 +458,7 @@ void Board::releaseOnStack(int x, int y) {
     else {
         currentCard->setPos(lastX,lastY);
     }
+    return false;
 }
 
 void Board::mouseMoveEvent(QMouseEvent *e) {
@@ -690,4 +697,14 @@ void Board::saveBoard() const
 void Board::restorePreviousBoard()
 {
 
+}
+
+void Board::gagne() {
+    bool gagne = true;
+    for (int i = 0; i<4; i++) {
+        gagne = gagne && (stack[i]->getSize() == 13);
+    }
+    if (gagne) {
+        QMessageBox::information(this, "Titre de la fenêtre", "Bonjour et bienvenue à tous les Zéros !");
+    }
 }

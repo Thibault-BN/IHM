@@ -17,6 +17,7 @@
 #include <QBrush>
 #include <QMouseEvent>
 #include <QMainWindow>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -55,10 +56,12 @@ private:
     bool clickOnStack(int x, int y, int &numStack);
 
     bool releaseOnColumn(int x, int y);
-    void releaseOnStack(int x, int y);
+    bool releaseOnStack(int x, int y);
 
     bool movePossible(int lastCard, int newCard);
     bool moveOnStackPossible(int lastCard, int newCard);
+
+    void gagne();
 
     Card* currentCard;
     int shiftX;
