@@ -4,7 +4,11 @@ Board::Board()
 {
     deck = NULL;
     columns = NULL;
+<<<<<<< HEAD
     stack = NULL;
+=======
+    mouseIsPressed = false;
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
     setMinimumSize(800,600);
     QPalette Pal(palette());
     QColor color(76,164,35,255);
@@ -180,7 +184,11 @@ void Board::mousePressEvent(QMouseEvent * e) {
     }
     else if (clickOnColumn(e->x(),e->y(),numCol,numCard)){
         cout<<"Col : "<<numCol<<" card : "<< numCard<<endl;
+<<<<<<< HEAD
         currentCard = columns[numCol]->getCardI(numCard);
+=======
+        currentCard = columns[numCol]->getCards()[numCard];
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
         mouseIsPressed = true;
     }
 }
@@ -209,6 +217,7 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
     for (int i = 0; i<7; i++) {
         if ( x>columns[i]->getX() && x<(columns[i]->getX()+columns[i]->getW()) ) {
             //On teste ensuite sur la hauteur
+<<<<<<< HEAD
             if (columns[i]->getRootCard()->getLengthToLeaf() + 1 == 0) return false;
             else if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*10) ) {
                 //On test sur quelle carte on est tombé et si elle est retournée
@@ -216,6 +225,15 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
                     if (y>(columns[i]->getY()+j*10) && y<(columns[i]->getY()+(j+1)*10)) {
                         //C'est la carte j qui est cliquée
                         if (columns[i]->getCardI(j)->getFace()) return false;
+=======
+            if (columns[i]->getCards().size()==0) return false;
+            else if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getCards().size()-1)*10) ) {
+                //On test sur quelle carte on est tombé et si elle est retournée
+                for (int j=0; j<(columns[i]->getCards().size()-1);j++) {
+                    if (y>(columns[i]->getY()+j*10) && y<(columns[i]->getY()+(j+1)*10)) {
+                        //C'est la carte j qui est cliquée
+                        if (columns[i]->getCards()[j]->getFace()) return false;
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
                         else {
                             col = i;
                             card = j;
@@ -227,7 +245,11 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
                 }
                 //C'est la carte du dessus qui est cliquée
                 col = i;
+<<<<<<< HEAD
                 card = columns[i]->getRootCard()->getLengthToLeaf()+1-1;
+=======
+                card = columns[i]->getCards().size()-1;
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
                 shiftX = x-columns[i]->getX();
                 shiftY = y-columns[i]->getY()-card*10;
                 return true;
@@ -237,4 +259,7 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
     }
     return false;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c

@@ -16,7 +16,10 @@
 #include <QRect>
 #include <QBrush>
 #include <QMouseEvent>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
 
 using namespace std;
 
@@ -33,7 +36,11 @@ private:
     Deck * deck;
     bool mouseIsPressed;
 
+<<<<<<< HEAD
     void fillColumns(Card**);
+=======
+    void fillColumns(QVector<Card*>*);
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
     void randomize(int*);
     void paintEvent(QPaintEvent * e);
     void updatePos();
@@ -48,7 +55,10 @@ private:
     Card* currentCard;
     int shiftX;
     int shiftY;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5e1366037b6b2a5e7fc2a137c9997bbb0739a21c
 
 public slots:
     void newGame();
