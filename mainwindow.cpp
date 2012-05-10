@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QMenu * gameMenu = menubar->addMenu(tr("&Partie"));
     gameMenu->addAction(actionUndo);
     gameMenu->addAction(actionRestart);
+
     //Tool Bar
     QToolBar* toolBar = addToolBar("Fichier");
     toolBar->addAction(actionNewGame);

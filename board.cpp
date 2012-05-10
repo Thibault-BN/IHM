@@ -914,9 +914,6 @@ bool Board::autoCompleteB(){
                 deck->setIndex(deck->getIndex()-1);
                 stack[stackNb]->addCard(card);
 
-                updatePos();
-                update();
-                gagne();
                 return true;
             }
         }
@@ -933,22 +930,20 @@ bool Board::autoCompleteB(){
                     else {
                         card2 = stack[stackNb]->getRootCard()->getLeaf()->getNumber();
                     }
+
                     if (moveOnStackPossible(card->getNumber(),card2)) {
                         saveBoard();
                         if(card->getPreviousCard()!=NULL) {
                             card->getPreviousCard()->setNextCard(NULL);
                             card->getPreviousCard()->setFace(false);
                             card->setPreviousCard(NULL);
-
                         }
                         else {
-                            stack[stackNb]->setRootCard(NULL);
+                            columns[i]->setRootCard(NULL);
                         }
                         stack[stackNb]->addCard(card);
-                        updatePos();
-                        update();
-                        gagne();
                         return true;
+                        break;
                     }
                 }
             }
@@ -962,6 +957,7 @@ void Board::autoComplete(){
     while (test) {
         updatePos();
         update();
+        gagne();
         test=autoCompleteB();
     }
 }
