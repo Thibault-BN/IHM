@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     board.cpp \
     column.cpp \
     deck.cpp \
-    stack.cpp
+    stack.cpp \
+    mouvement.cpp
 
 HEADERS  += mainwindow.h \
     card.h \
     board.h \
     column.h \
     deck.h \
-    stack.h
+    stack.h \
+    mouvement.h
 
 FORMS    +=
 
