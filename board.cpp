@@ -198,24 +198,28 @@ void Board::mouseReleaseEvent(QMouseEvent *e) {
             int numCol;
             int numCard;
             if (clickOnColumn(e->x(),e->y(),numCol,numCard)) {
-                int newCardNum = columns[numCol]->getCardI(numCard)->getNumber();
-                if (movePossible(currentCard->getNumber(),newCardNum)) {
-                    //Alors on move la carte
-                    if(currentCard->getPreviousCard()!=NULL) {
-                        currentCard->getPreviousCard()->setNextCard(NULL);
-                        currentCard->getPreviousCard()->setFace(false);
-                        currentCard->setPreviousCard(NULL);
+                int newCardNum = 52;
+                if (numCard!=52) {
+                    newCardNum = columns[numCol]->getCardI(numCard)->getNumber();
+                }
+                    if (movePossible(currentCard->getNumber(),newCardNum)) {
+                        //Alors on move la carte
+                        if(currentCard->getPreviousCard()!=NULL) {
+                            currentCard->getPreviousCard()->setNextCard(NULL);
+                            currentCard->getPreviousCard()->setFace(false);
+                            currentCard->setPreviousCard(NULL);
 
+                        }
+                        else {
+                            columns[currCol]->setRootCard(NULL);
+                        }
+                        columns[numCol]->add(currentCard);
+                        updatePos();
                     }
                     else {
-                        columns[currCol]->setRootCard(NULL);
+                        currentCard->setPos(lastX,lastY);
                     }
-                    columns[numCol]->add(currentCard);
-                    updatePos();
-                }
-                else {
-                    currentCard->setPos(lastX,lastY);
-                }
+
             }
             else {
                 currentCard->setPos(lastX,lastY);
@@ -255,6 +259,7 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
             if (columns[i]->getRootCard()==NULL){
                 if(y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH())) {
                 card = 52;
+                col = i;
                 return true;
                 }
                 else return false;
@@ -389,6 +394,12 @@ bool Board::movePossible(int lastCard, int newCard) {
     case 24:
     case 37:
         if (newCard==12||newCard==51) return true;
+        break;
+    case 12:
+    case 25:
+    case 38:
+    case 51:
+        if (newCard==52) return true;
         break;
     default:
         return false;

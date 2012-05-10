@@ -18,8 +18,9 @@ Column::Column()
 
 void Column::add(Card * _cards)
 {
-    if (cards == NULL)
+    if (cards == NULL) {
         cards = _cards;
+    }
     else
     {
         Card* leaf = cards->getLeaf();
