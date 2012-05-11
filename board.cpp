@@ -838,8 +838,6 @@ void Board::restorePreviousBoard()
         for (int iColumn = 0; iColumn < 7; iColumn++)
         {
             int nCards = board->getNCardsColumns()[iColumn];
-
-            cout << "Restoring Column ...... "<< iColumn << "/" << nCards << endl;
             if (nCards > 0)
             {
                 Card * root = board->getColumns()[iColumn][0];
@@ -850,7 +848,6 @@ void Board::restorePreviousBoard()
 
                 for (int i = 1; i < nCards; i++)
                 {
-                    cout << " " << card->getNumber();
                     card = board->getColumns()[iColumn][i];
 
                     card->setPreviousCard(board->getColumns()[iColumn][i-1]);
@@ -866,8 +863,6 @@ void Board::restorePreviousBoard()
                     }
                 }
                 card->setNextCard(NULL);
-                cout << " " << card->getNumber() << endl;
-
             }
             else
             {
