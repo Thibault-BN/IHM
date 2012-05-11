@@ -7,10 +7,7 @@ Stack::Stack()
 
 Stack::~Stack()
 {
-//    if(cards != NULL)
-//    {
-//        delete cards;
-//    }
+
 }
 
 void Stack::addCard(Card * card)
@@ -36,7 +33,6 @@ Card* Stack::getCardI(int i) const
     {
         card = card->getNextCard();
     }
-
     return card;
 }
 
