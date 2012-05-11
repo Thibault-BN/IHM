@@ -33,6 +33,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(board,SIGNAL(boardSaved()),this,SLOT(actionPerformed()));
     connect(board, SIGNAL(savedBoardsEmpty()),this,SLOT(noMoreSavedBoards()));
 
+    QAction * autoComp = new QAction(QIcon(":/images/icones/new.png"),tr("&Auto-Complete"),this);
+    autoComp->setShortcut(tr("Ctrl+A"));
+    connect(autoComp, SIGNAL(triggered()), board, SLOT(autoComplete()));
+
     //Menus déroulants
     QMenuBar* menubar = menuBar();
     QMenu * fileMenu = menubar->addMenu(tr("&Fichier"));
@@ -49,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     toolBar->addAction(actionUndo);
     toolBar->addAction(actionRestart);
     toolBar->addAction(actionQuit);
+    toolBar->addAction(autoComp);
 
     st = statusBar();
 

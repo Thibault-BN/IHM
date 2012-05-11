@@ -60,6 +60,8 @@ private:
     bool movePossible(int lastCard, int newCard);
     bool moveOnStackPossible(int lastCard, int newCard);
 
+    bool autoCompleteB();
+
     void gagne();
 
     Card* currentCard;
@@ -83,6 +85,7 @@ public slots:
     void restorePreviousBoard();
     void restartGame();
     void updateTime();
+    void autoComplete();
 
 signals:
     void boardSaved();
