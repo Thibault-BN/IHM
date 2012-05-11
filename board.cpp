@@ -348,7 +348,6 @@ void Board::mouseReleaseEvent(QMouseEvent *e) {
     }
 }
 
-
 bool Board::releaseOnColumn(int x, int y) {
     int numCol;
     int numCard;
@@ -493,7 +492,6 @@ bool Board::releaseOnStack(int x, int y)
     }
     return false;
 }
-
 
 void Board::mouseMoveEvent(QMouseEvent *e) {
     if (cardIsSelectedFromStack || cardIsSelectedFromColumn) {
@@ -1020,9 +1018,23 @@ void Board::readStatsFile(){
 
 void Board::saveStatsFile()
 {
-    ofstream fichierOut(fileName.c_str(), ios_base::trunc);
+    ofstream fileOut(fileName.c_str(), ios_base::trunc);
 
     //Vérification de l'ofstream
+    if (fileOut)
+    {
+        fileOut << nPlayedGames << " "
+                << nDeal1Games << " "
+                << nDeal3Games << " "
+                << nWonGames << " "
+                << nWonDeal1Games << " "
+                << nWonDeal3Games << " "
+                << totalPLayedTime << endl;
+    }
+    else
+    {
+        cerr << "Problème d'écriture du fichier de statistiques" << endl;
+    }
 }
 
 
