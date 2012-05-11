@@ -18,7 +18,8 @@ Board::Board()
     Pal.setColor(QPalette::Background, color);
     setAutoFillBackground(true);
     setPalette(Pal);
-    cout << "Partie cree" << endl;
+    fileName = "stats";
+    readStatsFile();
 }
 
 //Board::~Board()
@@ -978,4 +979,48 @@ void Board::autoComplete(){
         }
         else cont=false;
     }
+}
+
+void Board::readStatsFile(){
+    ifstream fileIn(fileName.c_str(), ios_base::in); //Ouverture du fichier à lire
+
+    if (fileIn)
+    {
+        string line;
+
+        if (getline(fileIn, line))
+        {
+            cout << "fichier de stat" << endl;
+            istringstream intStream(line);
+            intStream >> this->nPlayedGames;
+            intStream >> this->nDeal1Games;
+            intStream >> this->nDeal3Games;
+            intStream >> this->nWonGames;
+            intStream >> this->nWonDeal1Games;
+            intStream >> this->nWonDeal3Games;
+            intStream >> this->totalPLayedTime;
+        }
+        else
+        {
+            cerr << "fichier de stats corrompu" <<endl;
+        }
+    }
+    else
+    {
+        cout << "Pas fileIN" << endl;
+        nPlayedGames = 0;
+        nDeal1Games = 0;
+        nDeal3Games = 0;
+        nWonGames = 0;
+        nWonDeal1Games = 0;
+        nWonDeal3Games = 0;
+        totalPLayedTime = 0;
+    }
+}
+
+void Board::saveStatsFile()
+{
+    ofstream fichierOut(fileName.c_str(), ios_base::trunc);
+
+    //Vérification de l'ofstream
 }

@@ -8,6 +8,9 @@
 
 #include <algorithm>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <QList>
 #include <QObject>
 #include <QWidget>
@@ -79,6 +82,20 @@ private:
 
     //Time
     int gameTime;
+
+    //Stats
+    int nPlayedGames;
+    int nDeal1Games;
+    int nDeal3Games;
+    int nWonGames;
+    int nWonDeal1Games;
+    int nWonDeal3Games;
+    int totalPLayedTime;
+
+    string fileName;
+
+    void readStatsFile();
+    void saveStatsFile();
 
 public slots:
     void newGame();

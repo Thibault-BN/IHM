@@ -7,7 +7,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     board = new Board();
 
     timer = new QTimer();
-    timer->setInterval(1);
+    timer->setInterval(1000);
     connect(timer,SIGNAL(timeout()),board,SLOT(updateTime()));
     connect(board,SIGNAL(startTime()),this,SLOT(startTimer()));
     connect(board,SIGNAL(newTime(int &)),this,SLOT(updateTimer(int &)));
