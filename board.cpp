@@ -888,8 +888,13 @@ void Board::gagne() {
     if (gagne) {
         emit stopTime();
         QMessageBox msgBox;
-        msgBox.setText("Felicitations! \n Voici vos stats :\n\n\nVoulez-vous rejouer?");
+        QString text;
+        text.append("Felicitations !! \n\n\n");
+        test.append("Voici vos statistiques :\n\n");
+        test.append("   Nombre de parties jouees :   &d",nPlayedGames);
+        msgBox.setText(text);
         msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+        msgBox.setInformativeText("Voulez-vous rejouer?");
         msgBox.setDefaultButton(QMessageBox::Yes);
         msgBox.setWindowTitle("Bravo vous avez gagne !");
 
