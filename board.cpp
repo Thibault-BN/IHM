@@ -325,7 +325,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
                         update();
 
                         //On vérifie toujours si l'on a gagné en ajoutant une carte sur une pile
-                        gagne();
+                        hasWon();
                         break;
                     }
                 }
@@ -368,7 +368,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
 
                 updatePos();
                 update();
-                gagne();
+                hasWon();
                 break;
             }
         }
@@ -380,7 +380,7 @@ void Board::mouseReleaseEvent(QMouseEvent *e) {
     if(cardIsSelectedFromStack || cardIsSelectedFromColumn || cardIsSelectedFromDeck) {
         if (!releaseOnColumn(e->x(),e->y())) {
             if (releaseOnStack(e->x(),e->y())) {
-                gagne();
+                hasWon();
             }
         }
         cardIsSelectedFromStack=false;
@@ -967,14 +967,14 @@ void Board::updateTime()
 /*
   On teste si on a gagné dès que l'on ajoute une carte à un stack
   */
-void Board::gagne() {
+void Board::hasWon() {
 
-    bool gagne = true;
+    bool won = true;
     for (int i = 0; i<4; i++) {
         //La pile est remplie si elle contient 13 cartes
-        gagne = gagne && (stack[i]->getSize() == 13);
+        won = won && (stack[i]->getSize() == 13);
     }
-    if (gagne) {
+    if (won) {
         //On arrete le temps en cours
         emit stopTime();
 
@@ -987,9 +987,21 @@ void Board::gagne() {
 
         //Boite de dialogue avec les stats
         QMessageBox msgBox;
-        QString text;
-        text.append(QString("Felicitations !! \n\n\n"));
-        text.append(QString("Voici vos statistiques :\n\n"));
+        ostringstream oss;
+        oss << "Felicitations !!" <<endl<<endl<<endl<<
+               "Voici vos statistiques :"<<endl<<endl<<
+               "Nombre de parties jouées  :  "<<nPlayedGames<<endl<<
+               "Nombre de parties gagnées :  "<<nWonGames<<endl<<
+               "Pourcentage de réussite   :  "<<(nWonGames/nPlayedGames)/100<<"%"<<endl<<endl<<
+               "Nombre de parties jouées en Deal 1  :  "<<nDeal1Games<<endl<<
+               "Nombre de parties gagnées en Deal 1 :  "<<nWonDeal1Games<<endl<<
+               "Pourcentage de réussite en Deal 1   :  "<<(nWonDeal1Games/nDeal1Games)/100<<"%"<<endl<<endl<<
+               "Nombre de parties jouées en Deal 3  :  "<<nDeal3Games<<endl<<
+               "Nombre de parties gagnées en Deal 3 :  "<<nWonDeal3Games<<endl<<
+               "Pourcentage de réussite en Deal 3   :  "<<(nWonDeal3Games/nDeal3Games)/100<<"%"<<endl<<endl<<
+               "Temps total passé à jouer  :  "<<totalPLayedTime<<"sec"<<endl<<
+               "Temps moyen par partie     :  "<<(totalPLayedTime/nPlayedGames)<<endl;
+        QString text = QString::fromStdString(oss.str());
         msgBox.setText(text);
         msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
         msgBox.setInformativeText("Voulez-vous rejouer?");
@@ -1060,7 +1072,7 @@ void Board::autoComplete(){
         if (autoCompleteB()) {
             updatePos();
             update();
-            gagne();
+            hasWon();
         }
         else cont=false;
     }

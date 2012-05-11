@@ -24,6 +24,7 @@
 #include <QMouseEvent>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <sstream>
 
 using namespace std;
 
@@ -77,7 +78,7 @@ private:
 
     bool autoCompleteB();
 
-    void gagne();
+    void hasWon();
 
     Card* currentCard;     //Carte qui se déplace
     int currCol;
