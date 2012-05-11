@@ -123,6 +123,7 @@ public slots:
     void deal1();
     void deal3();
     void showStats();
+    void reiniStats();
 
 signals:
     void boardSaved();
