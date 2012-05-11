@@ -8,7 +8,7 @@
 
 /*
   Stack correspond aux 4 piles du haut à remplir
-  On ne peut les remplir qu'une d'une couleur
+  On ne peut les remplir que d'une couleur
   et les cartes se suivent dans l'ordre
   */
 class Stack
@@ -17,6 +17,7 @@ public:
     Stack();
     ~Stack();
 
+    //Manipulation des cartes
     void addCard(Card*);
 
     //Setters
@@ -36,7 +37,7 @@ public:
     void draw(QPainter &painter);
 
 private:
-    Card* cards;
+    Card* cards; //Adresse carte du dessous : NULL ou adresse d'un As
     int posX;
     int posY;
     int w;
