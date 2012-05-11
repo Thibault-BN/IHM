@@ -25,17 +25,20 @@ public:
 
     void draw(QPainter &painter, int dealT);
 
+    //Setters
     inline void setPos(int x, int y) {posX=x; posY=y;}
     inline void setSize(int w_,int h_) {w = w_; h = h_;}
+    inline void setIndex(int i) {index = i;}
+    inline void setEcart(int ec) {ecart=ec;}
+    inline void setRootCard(Card* _c) { cards = _c;}
+
+    //Getters
+    inline int getEcart() {return ecart;}
     inline int &getX() {return posX;}
     inline int &getY() {return posY;}
     inline int &getW() {return w;}
     inline int &getH() {return h;}
-    inline void setIndex(int i) {index = i;}
-    inline void setEcart(int ec) {ecart=ec;}
-    inline int getEcart() {return ecart;}
     inline Card* getRootCard() {return cards;}
-    inline void setRootCard(Card* _c) { cards = _c;}
     inline int getIndex() {return index;}
 
 private:
