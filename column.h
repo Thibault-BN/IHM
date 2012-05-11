@@ -1,13 +1,13 @@
 #ifndef COLUMN_H
 #define COLUMN_H
 
+#include "card.h"
+
 #include <QVector>
 #include <string>
-
-#include "card.h"
 #include <QPainter>
-
 #include <QPen>
+#include <iostream>
 
 using namespace std;
 
@@ -15,14 +15,13 @@ class Column
 {
 public:
     Column();
-//    ~Column();
 
     //Manip cards
     void add(Card*);
 
     inline Card* getRootCard() const { return cards;}
-    inline void setRootCard(Card* card_) {cards=card_;}
     Card * getCardI(int i) const;
+    inline void setRootCard(Card* card_) {cards=card_;}
 
     //dessin
     void draw(QPainter &painter); //... arguments

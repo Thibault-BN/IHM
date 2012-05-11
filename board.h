@@ -1,5 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
+
 #include "column.h"
 #include "deck.h"
 #include "card.h"
@@ -31,27 +32,38 @@ class Board : public QWidget
     Q_OBJECT
 public:
     Board();
-    //    ~Board();
 
 private:
+
+    //Deal 1 ou deal 3
+    static int dealType;
+
+    //Variables contenant les cartes
     Column** columns;
     Stack** stack;
     Deck * deck;
+
+    //De ou provient la carte que l'on veut déplacer
     bool cardIsSelectedFromStack;
     bool cardIsSelectedFromColumn;
     bool cardIsSelectedFromDeck;
 
+    //Création du jeu
     void fillColumns(Card**);
     void randomize(int*);
-    void paintEvent(QPaintEvent * e);
-    void updatePos();
-    void resizeEvent(QResizeEvent *);
 
+    //Mise à jour de l'affichage
+    void updatePos();
+    void paintEvent(QPaintEvent * e);
+
+    //Gestion des événements
+    void resizeEvent(QResizeEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
 
+    //Logique du jeu
     bool clickOnDeck(int x, int y);
     bool clickOnReverseDeck(int x, int y);
     bool clickOnColumn(int x, int y, int &col, int &card);
@@ -67,6 +79,7 @@ private:
 
     void gagne();
 
+    //Carte qui se déplace
     Card* currentCard;
     int shiftX;
     int shiftY;
@@ -74,7 +87,6 @@ private:
     int lastY;
     int currCol;
     int currStack;
-    static int dealType;
 
     //Sauvegarde
     QList<SavedBoard*> savedBoards;
