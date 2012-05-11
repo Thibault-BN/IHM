@@ -153,7 +153,7 @@ void Board::randomize(int tab[])
 void Board::updatePos(){
 
     int card_height = (this->height()-210)/3;
-    if (card_height>115) card_height=115;
+    //if (card_height>115) card_height=115;
     int card_width = 0.67*card_height;
     int ecartV = (width()-(7*card_width))/8;
     int ecartH = 30;
