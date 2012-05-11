@@ -32,20 +32,6 @@ Card * Deck::getLeaf() const
     return card;
 }
 
-void Deck::describe()
-{
-    cout << "Deck " << endl;
-
-    Card * card = cards;
-    while (card != NULL)
-    {
-        cout << " " << card->getNumber();
-        card = card->getNextCard();
-    }
-    cout << endl;
-
-}
-
 Card * Deck::getCardI(int i) const
 {
     int j=0;

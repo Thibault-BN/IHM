@@ -26,7 +26,6 @@ public:
     Card * getCardI(int i) const;
 
     void deal(int); //Deal 3 ou 1 ?
-    void describe();
 
     //Dessin
     void draw(QPainter &painter, int dealT);
