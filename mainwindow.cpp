@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(board,SIGNAL(boardSaved()),this,SLOT(actionPerformed()));
     connect(board, SIGNAL(savedBoardsEmpty()),this,SLOT(noMoreSavedBoards()));
 
-    QAction * autoComp = new QAction(QIcon(":/images/icones/new.png"),tr("&Auto-Complete"),this);
+    QAction * autoComp = new QAction(QIcon(":/images/icones/autoComplete.png"),tr("&Auto-Complete"),this);
     autoComp->setShortcut(tr("Ctrl+A"));
     connect(autoComp, SIGNAL(triggered()), board, SLOT(autoComplete()));
 
@@ -51,9 +51,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QToolBar* toolBar = addToolBar("Fichier");
     toolBar->addAction(actionNewGame);
     toolBar->addAction(actionUndo);
+    toolBar->addAction(autoComp);
+
     toolBar->addAction(actionRestart);
     toolBar->addAction(actionQuit);
-    toolBar->addAction(autoComp);
 
     st = statusBar();
 
