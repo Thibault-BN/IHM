@@ -586,6 +586,8 @@ bool Board::clickOnDeck(int x, int y) {
 
 bool Board::clickOnReverseDeck(int x, int y){
 
+    //On fait la même chose mais sur le deck retourné
+    //La position de carte valable dépend du type de deal et de l'index du deck
     if(deck->getIndex()>=2 || dealType==1){
         if (x>(deck->getX()+deck->getEcart()+(dealType-1)*15) && x<(deck->getX()+deck->getEcart()+deck->getW()+(dealType-1)*15) && y>deck->getY() && y<(deck->getY()+deck->getH())){
             if (deck->getIndex() != -1) {
@@ -607,12 +609,18 @@ bool Board::clickOnReverseDeck(int x, int y){
     return false;
 }
 
+/*
+  On renvoie true si on a cliqué sur une carte
+  col et card contiendront alors le numéro de la colonne de la carte cliquée
+  et le numéro de la carte dans cette colonne
+  */
 bool Board::clickOnColumn(int x, int y, int &col, int &card) {
+
     //On teste d'abord par la largeur
     for (int i = 0; i<7; i++) {
         if ( x>columns[i]->getX() && x<(columns[i]->getX()+columns[i]->getW()) ) {
-            //On teste ensuite sur la hauteur
 
+            //On teste ensuite sur la hauteur
             if (columns[i]->getRootCard()==NULL){
                 if(y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH())) {
                     card = 52;
@@ -622,12 +630,13 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
                 else return false;
             }
 
-            if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*25) ) {
+            if (y>columns[i]->getY() && y<(columns[i]->getY()+columns[i]->getH()+(columns[i]->getRootCard()->getLengthToLeaf() +1 -1)*ECART_CARTE) ) {
+
                 //On test sur quelle carte on est tombé et si elle est retournée
                 //S'il n'y a pas de carte, on renvoie 52 en num Card
-
                 for (int j=0; j<(columns[i]->getRootCard()->getLengthToLeaf()+1-1);j++) {
-                    if (y>(columns[i]->getY()+j*25) && y<(columns[i]->getY()+(j+1)*25)) {
+
+                    if (y>(columns[i]->getY()+j*ECART_CARTE) && y<(columns[i]->getY()+(j+1)*ECART_CARTE)) {
                         //C'est la carte j qui est cliquée
                         if (columns[i]->getCardI(j)->getFace()) return false;
                         else {
@@ -652,6 +661,10 @@ bool Board::clickOnColumn(int x, int y, int &col, int &card) {
     return false;
 }
 
+/*
+  On renvoie vrai si une pile se trouve sous la souris
+  numStack sera alors le numéro de la pile concernée
+  */
 bool Board::clickOnStack(int x, int y, int &numStack){
     for (int i = 0; i<4; i++) {
         if ( x>stack[i]->getX() && x<(stack[i]->getX()+stack[i]->getW()) ) {
@@ -666,9 +679,12 @@ bool Board::clickOnStack(int x, int y, int &numStack){
     return false;
 }
 
+/*
+  Renvoie vrai si lastCard peut se placer au dessus de newCard
+  dans une colonne
+  */
 bool Board::movePossible(int lastCard, int newCard) {
     switch(lastCard){
-
     case 0:
     case 39:
         if (newCard==14||newCard==27) return true;
@@ -778,6 +794,10 @@ bool Board::movePossible(int lastCard, int newCard) {
     return false;
 }
 
+/*
+  On renvoie vrai si lastCard peut se place au dessus de newCard
+  dans une pile
+  */
 bool Board::moveOnStackPossible(int lastCard, int newCard) {
     if (lastCard==(newCard+1)) return true;
     if ((lastCard==0 || lastCard==13 || lastCard==26 || lastCard==39) && newCard==52) return true;
@@ -944,13 +964,18 @@ void Board::updateTime()
     emit newTime(gameTime);
 }
 
+/*
+  On teste si on a gagné dès que l'on ajoute une carte à un stack
+  */
 void Board::gagne() {
 
     bool gagne = true;
     for (int i = 0; i<4; i++) {
+        //La pile est remplie si elle contient 13 cartes
         gagne = gagne && (stack[i]->getSize() == 13);
     }
     if (gagne) {
+        //On arrete le temps en cours
         emit stopTime();
 
         //Stats
@@ -960,6 +985,7 @@ void Board::gagne() {
         totalPLayedTime += gameTime;
         saveStatsFile();
 
+        //Boite de dialogue avec les stats
         QMessageBox msgBox;
         QString text;
         text.append(QString("Felicitations !! \n\n\n"));
@@ -970,88 +996,64 @@ void Board::gagne() {
         msgBox.setDefaultButton(QMessageBox::Yes);
         msgBox.setWindowTitle("Bravo vous avez gagne !");
 
-        if (msgBox.exec()) {
+        if (msgBox.exec() == QMessageBox::Yes) {
             newGame();
         }
     }
 }
 
+/*
+  Cette fonction regarde avec le board actuel si on peut placer
+  une carte sur la pile
+  */
 bool Board::autoCompleteB(){
-    //On vérifie d'abord le deck
+
+    //On ne vérifie ici pas si une carte de deck peut monter
     int stackNb, card2;
     Card* card;
-//    if (deck->getIndex() != -1) {
-//        card = deck->getCardI(deck->getIndex());
 
-//        for (stackNb=0;stackNb<4;stackNb++) {
-//            if (stack[stackNb]->getSize() == 0) {
-//                card2 = 52;
-//            }
-//            else {
-//                card2 = stack[stackNb]->getRootCard()->getLeaf()->getNumber();
-//            }
-//            if (moveOnStackPossible(card->getNumber(),card2)) {
-//                saveBoard();
-//                if (card->getPreviousCard()==NULL) {
-//                    deck->setRootCard(card->getNextCard());
-//                    if(card->getNextCard()!=NULL) card->getNextCard()->setPreviousCard(NULL);
-//                    card->setNextCard(NULL);
-//                }
-//                else if (card->getNextCard()==NULL){
-//                    card->getPreviousCard()->setNextCard(NULL);
-//                    card->setPreviousCard(NULL);
-//                }
-//                else {
-//                    card->getPreviousCard()->setNextCard(card->getNextCard());
-//                    card->getNextCard()->setPreviousCard(card->getPreviousCard());
-//                    card->setPreviousCard(NULL);
-//                    card->setNextCard(NULL);
-//                }
+    for (int i = 0; i<7; i++) {
+        if(columns[i]->getSize()!=0) {
+            card = columns[i]->getCardI(columns[i]->getSize()-1);
 
-//                columns[currCol]->setRootCard(NULL);
+            for (stackNb=0;stackNb<4;stackNb++) {
+                if (stack[stackNb]->getSize() == 0) {
+                    card2 = 52;
+                }
+                else {
+                    card2 = stack[stackNb]->getRootCard()->getLeaf()->getNumber();
+                }
 
-//                deck->setIndex(deck->getIndex()-1);
-//                stack[stackNb]->addCard(card);
+                if (moveOnStackPossible(card->getNumber(),card2)) {
+                    //Si on peut déplacer la carte alors on le fait et on sauve
+                    if (card->getNextCard()!=NULL) return false;
+                    saveBoard();
 
-//                return true;
-//            }
-//        }
-//    }
-//    else {
-        for (int i = 0; i<7; i++) {
-            if(columns[i]->getSize()!=0) {
-                card = columns[i]->getCardI(columns[i]->getSize()-1);
-
-                for (stackNb=0;stackNb<4;stackNb++) {
-                    if (stack[stackNb]->getSize() == 0) {
-                        card2 = 52;
+                    if(card->getPreviousCard()!=NULL) {
+                        card->getPreviousCard()->setNextCard(NULL);
+                        card->getPreviousCard()->setFace(false);
+                        card->setPreviousCard(NULL);
                     }
                     else {
-                        card2 = stack[stackNb]->getRootCard()->getLeaf()->getNumber();
+                        columns[i]->setRootCard(NULL);
                     }
 
-                    if (moveOnStackPossible(card->getNumber(),card2)) {
-                        if (card->getNextCard()!=NULL) return false;
-                        saveBoard();
-                        if(card->getPreviousCard()!=NULL) {
-                            card->getPreviousCard()->setNextCard(NULL);
-                            card->getPreviousCard()->setFace(false);
-                            card->setPreviousCard(NULL);
-                        }
-                        else {
-                            columns[i]->setRootCard(NULL);
-                        }
-                        stack[stackNb]->addCard(card);
-                        return true;
-                        break;
-                    }
+                    stack[stackNb]->addCard(card);
+                    return true;
+                    break;
                 }
             }
         }
-//    }
+    }
     return false;
 }
 
+/*
+  Cette fois ci on regarde si on peut ajouter des cartes
+  du board tant qu'il en reste
+  S'il reste des cartes mais qu'on ne peut plus en déplacer
+  alors on arrête
+  */
 void Board::autoComplete(){
     bool cont = true;
     while (cont) {
