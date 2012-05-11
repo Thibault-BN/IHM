@@ -43,14 +43,14 @@ private:
     Stack** stack;
     Deck * deck;
 
-    //De ou provient la carte que l'on veut déplacer
+    //D'ou provient la carte que l'on veut déplacer
     bool cardIsSelectedFromStack;
     bool cardIsSelectedFromColumn;
     bool cardIsSelectedFromDeck;
 
     //Création du jeu
     void fillColumns(Card**);
-    void randomize(int*);
+    void randomize(int*); //mélange aléatoire d'un tableau d'index
 
     //Mise à jour de l'affichage
     void updatePos();
@@ -79,20 +79,22 @@ private:
 
     void gagne();
 
-    //Carte qui se déplace
-    Card* currentCard;
+    Card* currentCard;     //Carte qui se déplace
+    int currCol;
+    int currStack;
+
     int shiftX;
     int shiftY;
     int lastX;
     int lastY;
-    int currCol;
-    int currStack;
+
 
     //Sauvegarde
+    //On a une "pile" d'états du board
     QList<SavedBoard*> savedBoards;
-    void saveBoard();
+    void saveBoard(); //A chaque action (déplacement...), on crée un SavedBoard, qu'on ajoute à la pile
 
-    //Time
+    //Temps de jeu
     int gameTime;
 
     //Stats
@@ -104,6 +106,7 @@ private:
     int nWonDeal3Games;
     int totalPLayedTime;
 
+    //Sauvegarde du fichier stats de nom fileName
     string fileName;
 
     void readStatsFile();
@@ -111,10 +114,10 @@ private:
 
 public slots:
     void newGame();
-    void restorePreviousBoard();
+    void restorePreviousBoard(); //Appelée lors d'un undo
     void restartGame();
-    void updateTime();
-    void autoComplete();
+    void updateTime(); //appelée chaque seconde
+    void autoComplete(); //méthode qui "monte" les cartes dans les stacks automatiquement
     void deal1();
     void deal3();
 

@@ -21,6 +21,8 @@ Card * Card::getLeaf()
     return card;
 }
 
+
+//Distance de la carte de l'instance jusqu'à la "feuille" de la liste chainee
 int Card::getLengthToLeaf()
 {
     int i = 0;

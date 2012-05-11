@@ -9,6 +9,11 @@
 
 using namespace std;
 
+/*
+ * Le deck est la pile de carte qui va être retournée par le joueur au cours du jeu
+ * Peut être retournée une carte par une (deal 1) ou trois carte par trois (deal 3)
+ */
+
 class Deck
 {
 public:
@@ -23,6 +28,7 @@ public:
     void deal(int); //Deal 3 ou 1 ?
     void describe();
 
+    //Dessin
     void draw(QPainter &painter, int dealT);
 
     //Setters
@@ -42,8 +48,8 @@ public:
     inline int getIndex() {return index;}
 
 private:
-    Card* cards;
-    int index;
+    Card* cards; //Adresse carte du dessous
+    int index;  //index de la carte retournee
     int posX;
     int posY;
     int w;
