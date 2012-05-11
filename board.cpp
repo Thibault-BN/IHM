@@ -52,7 +52,6 @@ void Board::newGame()
     //Creation des 7 colonnes
     if (columns != NULL) {
         delete [] columns;
-        cout << "colonnes deleted" << endl;
     }
 
     this->columns = new Column*[7];
@@ -95,9 +94,8 @@ void Board::newGame()
     updatePos();
     update();
 
-    //Lancement du timer
+    //Création du timer, lancement au premier mouvement
     gameTime = 0;
-    emit startTime();
     emit newTime(gameTime);
     emit savedBoardsEmpty();
 
