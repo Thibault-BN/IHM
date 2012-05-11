@@ -989,16 +989,18 @@ void Board::hasWon() {
         ostringstream oss;
         oss << "Felicitations !!" <<endl<<endl<<endl<<
                "Voici vos statistiques :"<<endl<<endl<<
-               "Nombre de parties jouées  :  "<<nPlayedGames<<endl<<
-               "Nombre de parties gagnées :  "<<nWonGames<<endl<<
-               "Pourcentage de réussite   :  "<<(nWonGames/nPlayedGames)/100<<"%"<<endl<<endl<<
-               "Nombre de parties jouées en Deal 1  :  "<<nDeal1Games<<endl<<
-               "Nombre de parties gagnées en Deal 1 :  "<<nWonDeal1Games<<endl<<
-               "Pourcentage de réussite en Deal 1   :  "<<(nWonDeal1Games/nDeal1Games)/100<<"%"<<endl<<endl<<
-               "Nombre de parties jouées en Deal 3  :  "<<nDeal3Games<<endl<<
-               "Nombre de parties gagnées en Deal 3 :  "<<nWonDeal3Games<<endl<<
-               "Pourcentage de réussite en Deal 3   :  "<<(nWonDeal3Games/nDeal3Games)/100<<"%"<<endl<<endl<<
-               "Temps total passé à jouer  :  "<<totalPLayedTime<<"sec"<<endl<<
+               "Nombre de parties jouees  :  "<<nPlayedGames<<endl<<
+               "Nombre de parties gagnees :  "<<nWonGames<<endl<<
+               "Pourcentage de reussite   :  "<<(nWonGames/nPlayedGames)/100<<"%"<<endl<<endl<<
+               "Deal 1 : "<<endl<<
+               "Nombre de parties jouees  :  "<<nDeal1Games<<endl<<
+               "Nombre de parties gagnees :  "<<nWonDeal1Games<<endl<<
+               "Pourcentage de reussite   :  "<<(nWonDeal1Games/(nDeal1Games+0.01))/100<<"%"<<endl<<endl<<
+               "Deal 3 : "<<endl<<
+               "Nombre de parties jouees  :  "<<nDeal3Games<<endl<<
+               "Nombre de parties gagnees :  "<<nWonDeal3Games<<endl<<
+               "Pourcentage de reussite   :  "<<(nWonDeal3Games/(nDeal3Games+0.01))/100<<"%"<<endl<<endl<<
+               "Temps total passe a jouer  :  "<<totalPLayedTime<<"sec"<<endl<<
                "Temps moyen par partie     :  "<<(totalPLayedTime/nPlayedGames)<<endl;
         QString text = QString::fromStdString(oss.str());
         msgBox.setText(text);
@@ -1138,7 +1140,28 @@ void Board::saveStatsFile()
 
 void Board::showStats()
 {
-
+    //Boite de dialogue avec les stats
+    QMessageBox msgBox;
+    ostringstream oss;
+    oss << "Voici vos statistiques :"<<endl<<endl<<
+           "Nombre de parties jouees    :  "<<nPlayedGames<<endl<<
+           "Nombre de parties gagnees   :  "<<nWonGames<<endl<<
+           "Pourcentage de reussite     :  "<<(nWonGames/(nPlayedGames+0.01))/100<<"%"<<endl<<endl<<
+           "Deal 1 : "<<endl<<
+           "Nombre de parties jouees    :  "<<nDeal1Games<<endl<<
+           "Nombre de parties gagnees   :  "<<nWonDeal1Games<<endl<<
+           "Pourcentage de reussite     :  "<<(nWonDeal1Games/(nDeal1Games+0.01))/100<<"%"<<endl<<endl<<
+           "Deal 3 : "<<endl<<
+           "Nombre de parties jouees    :  "<<nDeal3Games<<endl<<
+           "Nombre de parties gagnees   :  "<<nWonDeal3Games<<endl<<
+           "Pourcentage de reussite     :  "<<(nWonDeal3Games/(nDeal3Games+0.01))/100<<"%"<<endl<<endl<<
+           "Temps total passe a jouer   :  "<<totalPLayedTime<<" sec"<<endl<<
+           "Temps moyen par partie      :  "<<(totalPLayedTime/nPlayedGames)<<endl;
+    QString text = QString::fromStdString(oss.str());
+    msgBox.setText(text);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setWindowTitle("Vos statistiques");
+    msgBox.exec();
 }
 
 void Board::deal1(){
