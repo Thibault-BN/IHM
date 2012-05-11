@@ -979,3 +979,13 @@ void Board::autoComplete(){
         else cont=false;
     }
 }
+
+void Board::deal1(){
+    dealType = 1;
+    newGame();
+}
+
+void Board::deal3(){
+    dealType = 3;
+    newGame();
+}

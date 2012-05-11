@@ -86,6 +86,8 @@ public slots:
     void restartGame();
     void updateTime();
     void autoComplete();
+    void deal1();
+    void deal3();
 
 signals:
     void boardSaved();

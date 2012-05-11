@@ -60,5 +60,7 @@
         <file>images/icones/restart.png</file>
         <file>images/icones/undo.png</file>
         <file>images/icones/autoComplete.png</file>
+        <file>images/icones/deal1.png</file>
+        <file>images/icones/deal3.png</file>
     </qresource>
 </RCC>
