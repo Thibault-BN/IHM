@@ -96,7 +96,6 @@ void Board::newGame()
 
     //Création du timer, lancement au premier mouvement
     gameTime = 0;
-    emit newTime(gameTime);
     emit savedBoardsEmpty();
 
     //Mise à jour des stats
@@ -803,6 +802,11 @@ bool Board::moveOnStackPossible(int lastCard, int newCard) {
 
 void Board::saveBoard()
 {
+    if (savedBoards.size() == 0)
+    {
+        emit startTime();
+    }
+
     SavedBoard * board = new SavedBoard();
 
     for (int i = 0; i < 4; i++)
@@ -818,8 +822,6 @@ void Board::saveBoard()
     board->saveDeck(deck->getRootCard(),deck->getIndex());
 
     savedBoards.push_back(board);
-
-    cout << "SavedBoars taille " << savedBoards.size() << endl;
 
     //Rajouter le temps
 
