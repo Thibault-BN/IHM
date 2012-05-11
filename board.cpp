@@ -881,47 +881,47 @@ bool Board::autoCompleteB(){
     //On vérifie d'abord le deck
     int stackNb, card2;
     Card* card;
-    if (deck->getIndex() != -1) {
-        card = deck->getCardI(deck->getIndex());
+//    if (deck->getIndex() != -1) {
+//        card = deck->getCardI(deck->getIndex());
 
-        for (stackNb=0;stackNb<4;stackNb++) {
-            if (stack[stackNb]->getSize() == 0) {
-                card2 = 52;
-            }
-            else {
-                card2 = stack[stackNb]->getRootCard()->getLeaf()->getNumber();
-            }
-            if (moveOnStackPossible(card->getNumber(),card2)) {
-                saveBoard();
-                if (card->getPreviousCard()==NULL) {
-                    deck->setRootCard(card->getNextCard());
-                    if(card->getNextCard()!=NULL) card->getNextCard()->setPreviousCard(NULL);
-                    card->setNextCard(NULL);
-                }
-                else if (card->getNextCard()==NULL){
-                    card->getPreviousCard()->setNextCard(NULL);
-                    card->setPreviousCard(NULL);
-                }
-                else {
-                    card->getPreviousCard()->setNextCard(card->getNextCard());
-                    card->getNextCard()->setPreviousCard(card->getPreviousCard());
-                    card->setPreviousCard(NULL);
-                    card->setNextCard(NULL);
-                }
+//        for (stackNb=0;stackNb<4;stackNb++) {
+//            if (stack[stackNb]->getSize() == 0) {
+//                card2 = 52;
+//            }
+//            else {
+//                card2 = stack[stackNb]->getRootCard()->getLeaf()->getNumber();
+//            }
+//            if (moveOnStackPossible(card->getNumber(),card2)) {
+//                saveBoard();
+//                if (card->getPreviousCard()==NULL) {
+//                    deck->setRootCard(card->getNextCard());
+//                    if(card->getNextCard()!=NULL) card->getNextCard()->setPreviousCard(NULL);
+//                    card->setNextCard(NULL);
+//                }
+//                else if (card->getNextCard()==NULL){
+//                    card->getPreviousCard()->setNextCard(NULL);
+//                    card->setPreviousCard(NULL);
+//                }
+//                else {
+//                    card->getPreviousCard()->setNextCard(card->getNextCard());
+//                    card->getNextCard()->setPreviousCard(card->getPreviousCard());
+//                    card->setPreviousCard(NULL);
+//                    card->setNextCard(NULL);
+//                }
 
-                columns[currCol]->setRootCard(NULL);
+//                columns[currCol]->setRootCard(NULL);
 
-                deck->setIndex(deck->getIndex()-1);
-                stack[stackNb]->addCard(card);
+//                deck->setIndex(deck->getIndex()-1);
+//                stack[stackNb]->addCard(card);
 
-                return true;
-            }
-        }
-    }
-    else {
+//                return true;
+//            }
+//        }
+//    }
+//    else {
         for (int i = 0; i<7; i++) {
             if(columns[i]->getSize()!=0) {
-                card = columns[i]->getRootCard()->getLeaf();
+                card = columns[i]->getCardI(columns[i]->getSize()-1);
 
                 for (stackNb=0;stackNb<4;stackNb++) {
                     if (stack[stackNb]->getSize() == 0) {
@@ -932,6 +932,7 @@ bool Board::autoCompleteB(){
                     }
 
                     if (moveOnStackPossible(card->getNumber(),card2)) {
+                        if (card->getNextCard()!=NULL) return false;
                         saveBoard();
                         if(card->getPreviousCard()!=NULL) {
                             card->getPreviousCard()->setNextCard(NULL);
@@ -948,16 +949,18 @@ bool Board::autoCompleteB(){
                 }
             }
         }
-    }
+//    }
     return false;
 }
 
 void Board::autoComplete(){
-    bool test= autoCompleteB();
-    while (test) {
-        updatePos();
-        update();
-        gagne();
-        test=autoCompleteB();
+    bool cont = true;
+    while (cont) {
+        if (autoCompleteB()) {
+            updatePos();
+            update();
+            gagne();
+        }
+        else cont=false;
     }
 }
