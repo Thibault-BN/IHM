@@ -7,6 +7,7 @@ Column::Column()
     cards = NULL;
 }
 
+//Ajout d'une liste chainee de carte à la colonne
 void Column::add(Card * _cards)
 {
     if (cards == NULL) {
@@ -14,23 +15,14 @@ void Column::add(Card * _cards)
     }
     else
     {
+        //On connecte la carte terminale de la colonne (s'il existe) à _cards
         Card* leaf = cards->getLeaf();
         _cards->setPreviousCard(leaf);
         leaf->setNextCard(_cards);
     }
 }
 
-void Column::describe() {
-    cout << "Column " << endl;
-
-    Card * card = cards;
-    while (card != NULL) {
-        cout << " " << card->getNumber();
-        card = card->getNextCard();
-    }
-    cout << endl;
-}
-
+//Fonction de pseudo accès direct
 Card * Column::getCardI(int i) const {
     int j=0;
     Card * card = cards;

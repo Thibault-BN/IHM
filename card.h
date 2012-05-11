@@ -6,6 +6,10 @@
 
 using namespace std;
 
+/* Classe instanciee pour chaque carte du jeu (52 fois)
+ * Structure de liste chainee : chaque carte contient l'adresse de la carte du dessus et celle de la carte du dessous
+ *
+ */
 class Card
 {
 public:
@@ -20,6 +24,8 @@ public:
     inline int &getH() {return h;}
     inline int getNumber() const { return number; }
     inline bool getFace() const { return faceDown; }
+
+    //Fonctions de structures
     inline Card * getNextCard() const { return nextCard; }
     inline Card * getPreviousCard() const { return previousCard; }
     Card * getLeaf();
@@ -33,8 +39,8 @@ public:
     inline void setFace(bool face) {faceDown = face;}
 
 private:
-    int number;
-    bool faceDown;
+    int number; //valeur de la carte
+    bool faceDown; //carte face contre terre ou pas
     int w;
     int h;
     int posX;

@@ -11,17 +11,23 @@
 
 using namespace std;
 
+/*
+ * Classe qui représente une colonne du jeu (il y en a 7)
+ * Les cartes contenue sont stockées dans une liste chainee, qui commence à la carte root
+ * On accède aux cartes indirectement, en passant par la carte racine (root, celle du dessous de la colonne)
+ *
+ */
 class Column
 {
 public:
     Column();
 
-    //Manip cards
+    //Manipulation cards
     void add(Card*);
 
     inline Card* getRootCard() const { return cards;}
-    Card * getCardI(int i) const;
     inline void setRootCard(Card* card_) {cards=card_;}
+    Card * getCardI(int i) const;
 
     //dessin
     void draw(QPainter &painter); //... arguments
@@ -33,11 +39,8 @@ public:
     inline int &getH() {return h;}
     int getSize();
 
-    //dev
-    void describe();
-
 private:
-    Card * cards;
+    Card * cards; //Contient l'adresse de la carte du dessous de la colonne, ou NULL
     int posX;
     int posY;
     int w;
