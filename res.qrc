@@ -62,5 +62,6 @@
         <file>images/icones/autoComplete.png</file>
         <file>images/icones/deal1.png</file>
         <file>images/icones/deal3.png</file>
+        <file>images/icones/stats.png</file>
     </qresource>
 </RCC>

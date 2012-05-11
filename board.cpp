@@ -67,14 +67,14 @@ void Board::newGame()
         stack[k] = new Stack();
     }
 
-    //On réparti aléatoirement les cartes
+    //On répartit aléatoirement les cartes
     int tab[52];
     randomize(tab);
 
+    //Création chainee des cartes
     Card * cards = NULL;
     cards = new Card(tab[0], false);
     Card* root = cards;
-
     for (int i=1; i < 52; i++)
     {
         Card * nextCard = new Card(tab[i], true);
@@ -128,7 +128,6 @@ void Board::fillColumns(Card** root)
         columns[i]->add(*root);
         *root = pileEnd;
     }
-    cout << "Columns filled" << endl;
 }
 
 void Board::randomize(int tab[])
@@ -325,7 +324,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
                         update();
 
                         //On vérifie toujours si l'on a gagné en ajoutant une carte sur une pile
-                        gagne();
+                        hasWon();
                         break;
                     }
                 }
@@ -368,7 +367,7 @@ void Board::mouseDoubleClickEvent(QMouseEvent *e){
 
                 updatePos();
                 update();
-                gagne();
+                hasWon();
                 break;
             }
         }
@@ -380,7 +379,7 @@ void Board::mouseReleaseEvent(QMouseEvent *e) {
     if(cardIsSelectedFromStack || cardIsSelectedFromColumn || cardIsSelectedFromDeck) {
         if (!releaseOnColumn(e->x(),e->y())) {
             if (releaseOnStack(e->x(),e->y())) {
-                gagne();
+                hasWon();
             }
         }
         cardIsSelectedFromStack=false;
@@ -967,14 +966,14 @@ void Board::updateTime()
 /*
   On teste si on a gagné dès que l'on ajoute une carte à un stack
   */
-void Board::gagne() {
+void Board::hasWon() {
 
-    bool gagne = true;
+    bool won = true;
     for (int i = 0; i<4; i++) {
         //La pile est remplie si elle contient 13 cartes
-        gagne = gagne && (stack[i]->getSize() == 13);
+        won = won && (stack[i]->getSize() == 13);
     }
-    if (gagne) {
+    if (won) {
         //On arrete le temps en cours
         emit stopTime();
 
@@ -1060,7 +1059,7 @@ void Board::autoComplete(){
         if (autoCompleteB()) {
             updatePos();
             update();
-            gagne();
+            hasWon();
         }
         else cont=false;
     }
@@ -1075,7 +1074,6 @@ void Board::readStatsFile(){
 
         if (getline(fileIn, line))
         {
-            cout << "fichier de stat" << endl;
             istringstream intStream(line);
             intStream >> this->nPlayedGames;
             intStream >> this->nDeal1Games;
@@ -1094,7 +1092,6 @@ void Board::readStatsFile(){
     }
     else
     {
-        cout << "Pas fileIN" << endl;
         nPlayedGames = 0;
         nDeal1Games = 0;
         nDeal3Games = 0;
@@ -1127,6 +1124,10 @@ void Board::saveStatsFile()
     }
 }
 
+void Board::showStats()
+{
+
+}
 
 void Board::deal1(){
     dealType = 1;

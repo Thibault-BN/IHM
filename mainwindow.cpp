@@ -71,11 +71,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     toolBar->addAction(actionNewGame);
     toolBar->addAction(deal1);
     toolBar->addAction(deal3);
+    toolBar->addAction(actionQuit);
+
+    toolBar->addSeparator();
     toolBar->addAction(actionUndo);
     toolBar->addAction(autoComp);
+    toolBar->addSeparator();
 
+    toolBar->addAction(actionStats);
     toolBar->addAction(actionRestart);
-    toolBar->addAction(actionQuit);
 
     st = statusBar();
 

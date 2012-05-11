@@ -77,7 +77,7 @@ private:
 
     bool autoCompleteB();
 
-    void gagne();
+    void hasWon();
 
     Card* currentCard;     //Carte qui se déplace
     int currCol;
