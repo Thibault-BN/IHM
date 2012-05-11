@@ -46,6 +46,11 @@ void Board::paintEvent(QPaintEvent *e) {
 
 void Board::newGame()
 {
+    if (gameTime != 0)
+    {
+        totalPLayedTime += gameTime;
+    }
+
     //Creation des 7 colonnes
     if (columns != NULL) {
         delete [] columns;
@@ -96,6 +101,12 @@ void Board::newGame()
     emit startTime();
     emit newTime(gameTime);
     emit savedBoardsEmpty();
+
+    nPlayedGames++;
+    if (dealType == 1) nDeal1Games++;
+    else nDeal3Games++;
+    saveStatsFile();
+
 }
 
 void Board::fillColumns(Card** root)
@@ -887,11 +898,18 @@ void Board::gagne() {
     }
     if (gagne) {
         emit stopTime();
+
+        //Stats
+        nWonGames++;
+        if (dealType == 1) nWonDeal1Games++;
+        else nWonDeal3Games++;
+        totalPLayedTime += gameTime;
+        saveStatsFile();
+
         QMessageBox msgBox;
         QString text;
-        text.append("Felicitations !! \n\n\n");
-        test.append("Voici vos statistiques :\n\n");
-        test.append("   Nombre de parties jouees :   &d",nPlayedGames);
+        text.append(QString("Felicitations !! \n\n\n"));
+        text.append(QString("Voici vos statistiques :\n\n"));
         msgBox.setText(text);
         msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
         msgBox.setInformativeText("Voulez-vous rejouer?");
@@ -1015,6 +1033,8 @@ void Board::readStatsFile(){
         {
             cerr << "fichier de stats corrompu" <<endl;
         }
+
+        fileIn.close();
     }
     else
     {
@@ -1043,6 +1063,7 @@ void Board::saveStatsFile()
                 << nWonDeal1Games << " "
                 << nWonDeal3Games << " "
                 << totalPLayedTime << endl;
+        fileOut.close();
     }
     else
     {
