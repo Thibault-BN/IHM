@@ -1,5 +1,4 @@
 #include "column.h"
-#include <iostream>
 
 using namespace std;
 
@@ -7,14 +6,6 @@ Column::Column()
 {
     cards = NULL;
 }
-
-//Column::~Column()
-//{
-//    if(cards != NULL)
-//    {
-//        delete cards;
-//    }
-//}
 
 void Column::add(Card * _cards)
 {
@@ -29,30 +20,25 @@ void Column::add(Card * _cards)
     }
 }
 
-void Column::describe()
-{
+void Column::describe() {
     cout << "Column " << endl;
 
     Card * card = cards;
-    while (card != NULL)
-    {
+    while (card != NULL) {
         cout << " " << card->getNumber();
         card = card->getNextCard();
     }
     cout << endl;
 }
 
-Card * Column::getCardI(int i) const
-{
+Card * Column::getCardI(int i) const {
     int j=0;
     Card * card = cards;
 
-    while (j < i)
-    {
+    while (j < i) {
         card = card->getNextCard();
         j++;
     }
-
     return card;
 }
 
@@ -61,6 +47,7 @@ void Column::draw(QPainter &painter) {
     QRect rect(posX,posY,w,h);
     painter.drawRect(rect);
 
+    //On dessine la première carte, les autres suivront
     if (cards!=NULL) cards->draw(painter);
 }
 

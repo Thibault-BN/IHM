@@ -8,19 +8,12 @@ Card::Card(int i,bool face)
     this->previousCard = NULL;
 }
 
-//Card::~Card()
-//{
-//    cout << "Carte deleted :" << this->number << endl;
-//    if (nextCard != NULL)
-//    {
-//        delete nextCard;
-//    }
-//}
-
+/*
+  Renvoie la dernière carte de la liste chainee commençant pas cette carte
+  */
 Card * Card::getLeaf()
 {
     Card * card = this;
-
     while (card->getNextCard() != NULL)
     {
         card = card->getNextCard();
@@ -31,7 +24,6 @@ Card * Card::getLeaf()
 int Card::getLengthToLeaf()
 {
     int i = 0;
-
     Card * card = this;
 
     while (card->getNextCard() != NULL)
@@ -211,11 +203,9 @@ void Card::draw(QPainter &painter){
             break;
         }
     }
+
+    //On affiche les cartes suivantes
     if (nextCard!=NULL) {
         nextCard->draw(painter);
     }
-}
-
-void Card::setFace(bool face){
-    faceDown=face;
 }

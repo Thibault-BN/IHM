@@ -7,10 +7,7 @@ Deck::Deck()
 
 Deck::~Deck()
 {
-//    if(cards != NULL)
-//    {
-//        delete cards;
-//    }
+
 }
 
 void Deck::fill(Card * _deck)
@@ -59,7 +56,6 @@ Card * Deck::getCardI(int i) const
         card = card->getNextCard();
         j++;
     }
-
     return card;
 }
 
@@ -83,11 +79,13 @@ void Deck::draw(QPainter &painter, int dealT){
     if (index != -1) {
         if (dealT == 1) {
             if (index>0) {
+                //On affiche aussi la carte du dessous
                 getCardI(index-1)->draw(painter);
             }
             getCardI(index)->draw(painter);
         }
         else if (dealT==3) {
+            //On affiche les 3 cartes ou les cartes restantes
             if (index<2) {
                 for (int i=0;i<=index;i++) {
                     getCardI(i)->draw(painter);
