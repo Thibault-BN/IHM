@@ -1024,3 +1024,14 @@ void Board::saveStatsFile()
 
     //Vérification de l'ofstream
 }
+
+
+void Board::deal1(){
+    dealType = 1;
+    newGame();
+}
+
+void Board::deal3(){
+    dealType = 3;
+    newGame();
+}

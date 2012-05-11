@@ -37,6 +37,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     autoComp->setShortcut(tr("Ctrl+A"));
     connect(autoComp, SIGNAL(triggered()), board, SLOT(autoComplete()));
 
+    deal1 = new QAction(QIcon(":/images/icones/deal1.png"),tr("Deal &1"),this);
+    deal1->setShortcut(tr("Ctrl+1"));
+    connect(deal1, SIGNAL(triggered()), board, SLOT(deal1()));
+    connect(deal1, SIGNAL(triggered()),this, SLOT(setDeal3()));
+    deal1->setEnabled(true);
+
+    deal3 = new QAction(QIcon(":/images/icones/deal3.png"),tr("Deal &3"),this);
+    deal3->setShortcut(tr("Ctrl+3"));
+    connect(deal3, SIGNAL(triggered()), board, SLOT(deal3()));
+    connect(deal3, SIGNAL(triggered()),this, SLOT(setDeal1()));
+    deal3->setEnabled(false);
+
     //Menus déroulants
     QMenuBar* menubar = menuBar();
     QMenu * fileMenu = menubar->addMenu(tr("&Fichier"));
@@ -44,12 +56,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     fileMenu->addAction(actionQuit);
 
     QMenu * gameMenu = menubar->addMenu(tr("&Partie"));
+    gameMenu->addAction(deal1);
+    gameMenu->addAction(deal3);
     gameMenu->addAction(actionUndo);
     gameMenu->addAction(actionRestart);
 
     //Tool Bar
     QToolBar* toolBar = addToolBar("Fichier");
     toolBar->addAction(actionNewGame);
+    toolBar->addAction(deal1);
+    toolBar->addAction(deal3);
     toolBar->addAction(actionUndo);
     toolBar->addAction(autoComp);
 
