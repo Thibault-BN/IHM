@@ -882,14 +882,22 @@ void Board::updateTime()
 }
 
 void Board::gagne() {
-    emit stopTime();
 
     bool gagne = true;
     for (int i = 0; i<4; i++) {
         gagne = gagne && (stack[i]->getSize() == 13);
     }
     if (gagne) {
-        QMessageBox::information(this, "Titre de la fenêtre", "Bonjour et bienvenue à tous les Zéros !");
+        emit stopTime();
+        QMessageBox msgBox;
+        msgBox.setText("Felicitations! \n Voici vos stats :\n\n\nVoulez-vous rejouer?");
+        msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        msgBox.setWindowTitle("Bravo vous avez gagne !");
+
+        if (msgBox.exec()) {
+            newGame();
+        }
     }
 }
 
