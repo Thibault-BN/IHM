@@ -24,6 +24,7 @@
 #include <QMouseEvent>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <sstream>
 
 using namespace std;
 
