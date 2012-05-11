@@ -13,15 +13,18 @@ SavedBoard::SavedBoard()
     iLastFaceDownColumns = new int[7];
 }
 
+//Sauvegarde du stack de board
+//_root : racine du stack
 void SavedBoard::saveStack(int iStack, Card * _root)
 {
-    cout << "Stack " << iStack << endl;
 
+    //On distingue le cas ou le stack est vide du cas contraire
     if (_root != NULL)
     {
         int nCards = _root->getLengthToLeaf() + 1;
         stacks[iStack] = new Card*[nCards];
 
+        //Stockage dans le tableau stacks[iStack], de taille nCards
         for (int i = 0; i < nCards; i++)
         {
             cout << _root->getNumber() << " ";
@@ -38,6 +41,8 @@ void SavedBoard::saveStack(int iStack, Card * _root)
     }
 }
 
+//Sauvegarde de la colonne iColumn de board
+//_root : racine de la colonne
 void SavedBoard::saveColumn(int iColumn, Card * _root)
 {
     cout << "Column " << iColumn << endl;
