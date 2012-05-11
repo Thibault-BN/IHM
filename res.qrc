@@ -59,7 +59,6 @@
         <file>images/icones/quit.png</file>
         <file>images/icones/restart.png</file>
         <file>images/icones/undo.png</file>
-        <file>images/icones/play.png</file>
-        <file>images/icones/pause.png</file>
+        <file>images/icones/autoComplete.png</file>
     </qresource>
 </RCC>
