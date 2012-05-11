@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     actionStats->setShortcut(tr("Ctrl+S"));
     connect(actionStats,SIGNAL(triggered()),board, SLOT(showStats()));
 
+    QAction * reiniStats = new QAction(QIcon(":/images/icones/reini.png"),tr("Reinitialiser les Stats"),this);
+    connect(reiniStats,SIGNAL(triggered()),board, SLOT(reiniStats()));
+
     //Menus déroulants
     QMenuBar* menubar = menuBar();
     QMenu * fileMenu = menubar->addMenu(tr("&Fichier"));
@@ -79,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     toolBar->addSeparator();
 
     toolBar->addAction(actionStats);
+    toolBar->addAction(reiniStats);
     toolBar->addAction(actionRestart);
 
     st = statusBar();

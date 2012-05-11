@@ -1156,12 +1156,22 @@ void Board::showStats()
            "Nombre de parties gagnees   :  "<<nWonDeal3Games<<endl<<
            "Pourcentage de reussite     :  "<<(nWonDeal3Games/(nDeal3Games+0.01))/100<<"%"<<endl<<endl<<
            "Temps total passe a jouer   :  "<<totalPLayedTime<<" sec"<<endl<<
-           "Temps moyen par partie      :  "<<(totalPLayedTime/nPlayedGames)<<endl;
+           "Temps moyen par partie      :  "<<(totalPLayedTime/(nPlayedGames+0.01))<<endl;
     QString text = QString::fromStdString(oss.str());
     msgBox.setText(text);
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.setWindowTitle("Vos statistiques");
     msgBox.exec();
+}
+
+void Board::reiniStats(){
+    nPlayedGames=0;
+    nDeal1Games=0;
+    nDeal3Games=0;
+    nWonGames=0;
+    nWonDeal1Games=0;
+    nWonDeal3Games=0;
+    totalPLayedTime=0;
 }
 
 void Board::deal1(){
