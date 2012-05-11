@@ -106,6 +106,7 @@ private:
     int nWonDeal1Games;
     int nWonDeal3Games;
     int totalPLayedTime;
+    bool firstGame;
 
 
     //Sauvegarde du fichier stats de nom fileName
