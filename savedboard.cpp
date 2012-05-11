@@ -27,12 +27,10 @@ void SavedBoard::saveStack(int iStack, Card * _root)
         //Stockage dans le tableau stacks[iStack], de taille nCards
         for (int i = 0; i < nCards; i++)
         {
-            cout << _root->getNumber() << " ";
             stacks[iStack][i] = _root;
             _root = _root->getNextCard();
         }
         nCardsStacks[iStack] = nCards;
-        cout << endl;
     }
     else
     {
@@ -69,7 +67,6 @@ void SavedBoard::saveColumn(int iColumn, Card * _root)
             _root = _root->getNextCard();
         }
 
-        cout << endl;
 
         nCardsColumns[iColumn] = nCards;
     }

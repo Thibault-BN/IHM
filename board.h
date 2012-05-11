@@ -107,6 +107,7 @@ private:
     int nWonDeal3Games;
     int totalPLayedTime;
 
+
     //Sauvegarde du fichier stats de nom fileName
     string fileName;
 
@@ -121,6 +122,7 @@ public slots:
     void autoComplete(); //méthode qui "monte" les cartes dans les stacks automatiquement
     void deal1();
     void deal3();
+    void showStats();
 
 signals:
     void boardSaved();

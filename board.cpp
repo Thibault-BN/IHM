@@ -67,14 +67,14 @@ void Board::newGame()
         stack[k] = new Stack();
     }
 
-    //On réparti aléatoirement les cartes
+    //On répartit aléatoirement les cartes
     int tab[52];
     randomize(tab);
 
+    //Création chainee des cartes
     Card * cards = NULL;
     cards = new Card(tab[0], false);
     Card* root = cards;
-
     for (int i=1; i < 52; i++)
     {
         Card * nextCard = new Card(tab[i], true);
@@ -128,7 +128,6 @@ void Board::fillColumns(Card** root)
         columns[i]->add(*root);
         *root = pileEnd;
     }
-    cout << "Columns filled" << endl;
 }
 
 void Board::randomize(int tab[])
@@ -1087,7 +1086,6 @@ void Board::readStatsFile(){
 
         if (getline(fileIn, line))
         {
-            cout << "fichier de stat" << endl;
             istringstream intStream(line);
             intStream >> this->nPlayedGames;
             intStream >> this->nDeal1Games;
@@ -1106,7 +1104,6 @@ void Board::readStatsFile(){
     }
     else
     {
-        cout << "Pas fileIN" << endl;
         nPlayedGames = 0;
         nDeal1Games = 0;
         nDeal3Games = 0;
@@ -1139,6 +1136,10 @@ void Board::saveStatsFile()
     }
 }
 
+void Board::showStats()
+{
+
+}
 
 void Board::deal1(){
     dealType = 1;

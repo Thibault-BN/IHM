@@ -50,6 +50,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     connect(deal3, SIGNAL(triggered()),this, SLOT(setDeal1()));
     deal3->setEnabled(false);
 
+    QAction * actionStats = new QAction(QIcon(":/images/icones/stats.png"),tr("Stats"),this);
+    actionStats->setShortcut(tr("Ctrl+S"));
+    connect(actionStats,SIGNAL(triggered()),board, SLOT(showStats()));
+
     //Menus déroulants
     QMenuBar* menubar = menuBar();
     QMenu * fileMenu = menubar->addMenu(tr("&Fichier"));
@@ -67,11 +71,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     toolBar->addAction(actionNewGame);
     toolBar->addAction(deal1);
     toolBar->addAction(deal3);
+    toolBar->addAction(actionQuit);
+
+    toolBar->addSeparator();
     toolBar->addAction(actionUndo);
     toolBar->addAction(autoComp);
+    toolBar->addSeparator();
 
+    toolBar->addAction(actionStats);
     toolBar->addAction(actionRestart);
-    toolBar->addAction(actionQuit);
 
     st = statusBar();
 
