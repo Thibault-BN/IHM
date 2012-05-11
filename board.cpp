@@ -12,13 +12,12 @@ Board::Board()
     cardIsSelectedFromStack = false;
     cardIsSelectedFromColumn = false;
     cardIsSelectedFromDeck = false;
-    setMinimumSize(800,600);
+    setMinimumSize(800,500);
     QPalette Pal(palette());
     QColor color(76,164,35,255);
     Pal.setColor(QPalette::Background, color);
     setAutoFillBackground(true);
     setPalette(Pal);
-    newGame();
     cout << "Partie cree" << endl;
 }
 
@@ -92,6 +91,9 @@ void Board::newGame()
     updatePos();
     update();
 
+    gameTime = 0;
+    emit startTime();
+    emit newTime(gameTime);
     emit savedBoardsEmpty();
 }
 
@@ -865,9 +867,22 @@ void Board::restartGame()
     }
 
     restorePreviousBoard();
+
+    gameTime = 0;
+    emit startTime();
+    emit newTime(gameTime);
+}
+
+void Board::updateTime()
+{
+    gameTime++;
+
+    emit newTime(gameTime);
 }
 
 void Board::gagne() {
+    emit stopTime();
+
     bool gagne = true;
     for (int i = 0; i<4; i++) {
         gagne = gagne && (stack[i]->getSize() == 13);

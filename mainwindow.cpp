@@ -2,14 +2,20 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
-    setMinimumSize(800,500);
+    setMinimumSize(800,600);
 
     board = new Board();
+
+    timer = new QTimer();
+    timer->setInterval(1);
+    connect(timer,SIGNAL(timeout()),board,SLOT(updateTime()));
+    connect(board,SIGNAL(startTime()),this,SLOT(startTimer()));
+    connect(board,SIGNAL(newTime(int &)),this,SLOT(updateTimer(int &)));
+    connect(board,SIGNAL(stopTime()),this,SLOT(stopTimer()));
 
     QAction * actionNewGame = new QAction(QIcon(":/images/icones/new.png"),tr("&Nouvelle partie"),this);
     actionNewGame->setShortcut(tr("Ctrl+N"));
     connect(actionNewGame, SIGNAL(triggered()), board, SLOT(newGame()));
-
 
     QAction * actionQuit = new QAction(QIcon(":/images/icones/quit.png"),tr("&Quitter"),this);
     actionQuit->setShortcut(tr("Ctrl+Q"));
@@ -36,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QMenu * gameMenu = menubar->addMenu(tr("&Partie"));
     gameMenu->addAction(actionUndo);
     gameMenu->addAction(actionRestart);
+
     //Tool Bar
     QToolBar* toolBar = addToolBar("Fichier");
     toolBar->addAction(actionNewGame);
@@ -43,13 +50,31 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     toolBar->addAction(actionRestart);
     toolBar->addAction(actionQuit);
 
-    QStatusBar * stBar = statusBar();
+    st = statusBar();
 
     this->setCentralWidget(board);
+
+    board->newGame();
 }
 
 MainWindow::~MainWindow()
 {
     if (board != NULL)
         delete board;
+}
+
+void MainWindow::updateTimer(int & time)
+{
+    int s,m,h;
+    h = time/3600;
+    m = (time-h)/ 60;
+    s = time%60;
+    QString pH("0"),pM("0"),pS("0");
+
+    if (h>=10) pH = "";
+    if (m>=10) pM = "";
+    if (s>=10) pS = "";
+
+    if (timer->isActive() == false){ startTimer();}
+    st->showMessage(QString("Temps ecoule : ") + pH +  QString::number(time/3600) + QString(":") + pM + QString::number((time%3600)/60) + QString(":") +pS + QString::number(time%60));
 }

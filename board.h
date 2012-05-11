@@ -16,6 +16,7 @@
 #include <QImage>
 #include <QRect>
 #include <QBrush>
+#include <QTime>
 #include <QMouseEvent>
 #include <QMainWindow>
 #include <QMessageBox>
@@ -74,14 +75,21 @@ private:
     QList<SavedBoard*> savedBoards;
     void saveBoard();
 
+    //Time
+    int gameTime;
+
 public slots:
     void newGame();
     void restorePreviousBoard();
     void restartGame();
+    void updateTime();
 
 signals:
     void boardSaved();
     void savedBoardsEmpty();
+    void startTime();
+    void stopTime();
+    void newTime(int &);
 
 };
 
