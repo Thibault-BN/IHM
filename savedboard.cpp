@@ -45,8 +45,8 @@ void SavedBoard::saveStack(int iStack, Card * _root)
 //_root : racine de la colonne
 void SavedBoard::saveColumn(int iColumn, Card * _root)
 {
-    cout << "Column " << iColumn << endl;
     iLastFaceDownColumns[iColumn] = 0;
+
     if (_root != NULL)
     {
         int nCards = _root->getLengthToLeaf() + 1;
@@ -54,15 +54,17 @@ void SavedBoard::saveColumn(int iColumn, Card * _root)
 
         bool faceDown = true;
 
+        //La colonne du board est stockee dans le tableau columns[iColumn] de taille nCards
+        //On parcourt la colonne de carte en carte
         for (int i = 0; i < nCards; i++)
         {
+            //Les cartes sont face cachee jusqu'a ce qu'une carte soit face retournee
             if (faceDown && !_root->getFace())
             {
                 faceDown = false;
                 iLastFaceDownColumns[iColumn] = i-1;
             }
 
-            cout << _root->getNumber() << "(" << faceDown << ") ";
             columns[iColumn][i] = _root;
             _root = _root->getNextCard();
         }
